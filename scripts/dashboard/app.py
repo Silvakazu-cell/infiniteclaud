@@ -11,11 +11,13 @@ from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from dashboard.api.routes import router
+from dashboard.api.agents import agents_router
 
 app = FastAPI(title="InfiniteClaud", version="1.0.0")
 
 # Registrar rotas da API
 app.include_router(router)
+app.include_router(agents_router)
 
 # Servir arquivos estáticos (dashboard UI)
 STATIC_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static")
