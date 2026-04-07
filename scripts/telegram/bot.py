@@ -235,6 +235,12 @@ async def run_applescript(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text(f"❌ Erro: {e}")
 
 
+async def _run_sync(fn, **kwargs):
+    """Roda função sync em thread separada para não bloquear o asyncio loop."""
+    import asyncio
+    return await asyncio.to_thread(fn, **kwargs)
+
+
 async def _execute_tool(update: Update, tool_name: str, args: dict, description: str):
     """Executa uma ferramenta e envia o resultado."""
     await update.message.reply_text(f"🔧 {description}...")
@@ -243,7 +249,7 @@ async def _execute_tool(update: Update, tool_name: str, args: dict, description:
     if tool_name in ("screen_screenshot", "web_screenshot"):
         try:
             fn = TOOLS_MAP[tool_name]
-            result = fn(**args)
+            result = await _run_sync(fn, **args)
             path = result.split(": ")[-1].strip()
             if os.path.exists(path):
                 with open(path, "rb") as photo:
@@ -257,7 +263,7 @@ async def _execute_tool(update: Update, tool_name: str, args: dict, description:
     # Ferramenta normal
     try:
         fn = TOOLS_MAP[tool_name]
-        result = fn(**args)
+        result = await _run_sync(fn, **args)
         result_str = str(result)
         if len(result_str) > 4000:
             result_str = result_str[:4000] + "\n...(truncado)"
@@ -397,7 +403,7 @@ async def natural_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 fn = TOOLS_MAP.get(step["tool"])
                 if not fn:
                     continue
-                result = fn(**step["args"])
+                result = await _run_sync(fn, **step["args"])
                 last_result = result
 
                 # Screenshot → envia como foto

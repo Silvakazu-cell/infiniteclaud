@@ -179,26 +179,51 @@ def try_creative_solution(text: str) -> dict | None:
         if any(w in text_lower for w in ['cpu', 'processos', 'processo']):
             return {"steps": [{"tool": "shell_run", "args": {"command": "top -l 1 -n 5 | head -15"}, "desc": "Verificando processos"}], "description": "Verificando processos ativos", "creative": True}
 
-    # Abrir app nativo
-    if any(w in text_lower for w in ['abra o', 'abre o', 'abrir o', 'abra a', 'abre a', 'abrir a', 'abrir ']):
-        for prefix in ['abra o ', 'abre o ', 'abrir o ', 'abra a ', 'abre a ', 'abrir a ', 'abrir ']:
-            if prefix in text_lower:
-                app_name = text[text_lower.index(prefix) + len(prefix):].strip().rstrip('.,!?')
-                return {
-                    "steps": [{"tool": "applescript_run", "args": {"script": f'tell application "{app_name}" to activate'}, "desc": f"Abrindo {app_name}"}],
-                    "description": f"Vou abrir o {app_name}",
-                    "creative": True,
-                }
+    # Abrir app nativo — mapeia nomes comuns para apps reais
+    import re as _re
+    app_map = {
+        'terminal': 'Terminal', 'finder': 'Finder', 'safari': 'Safari',
+        'chrome': 'Google Chrome', 'spotify': 'Spotify', 'music': 'Music',
+        'musica': 'Music', 'notas': 'Notes', 'notes': 'Notes',
+        'calculadora': 'Calculator', 'calculator': 'Calculator',
+        'mail': 'Mail', 'email': 'Mail', 'messages': 'Messages',
+        'mensagens': 'Messages', 'calendar': 'Calendar', 'calendario': 'Calendar',
+        'photos': 'Photos', 'fotos': 'Photos', 'preview': 'Preview',
+        'textedit': 'TextEdit', 'vscode': 'Visual Studio Code',
+        'code': 'Visual Studio Code', 'slack': 'Slack', 'discord': 'Discord',
+        'telegram': 'Telegram', 'whatsapp': 'WhatsApp', 'notion': 'Notion',
+        'keynote': 'Keynote', 'pages': 'Pages', 'numbers': 'Numbers',
+        'xcode': 'Xcode', 'iterm': 'iTerm', 'iterm2': 'iTerm',
+    }
+
+    open_match = _re.search(
+        r'(?:abr[ae]|abrir|open)\s+(?:o|a|um[a]?\s+(?:nova?\s+)?(?:aba|janela)\s+(?:do|da|de|no|na)\s+)?(\w+)',
+        text_lower
+    )
+    if open_match:
+        raw_app = open_match.group(1).strip()
+        app_name = app_map.get(raw_app, raw_app.capitalize())
+        # Para "nova aba do terminal" → abrir nova janela do Terminal
+        if 'nova aba' in text_lower or 'nova janela' in text_lower:
+            script = f'tell application "{app_name}" to activate\ntell application "System Events" to keystroke "t" using command down'
+            desc = f"Abrindo nova aba no {app_name}"
+        else:
+            script = f'tell application "{app_name}" to activate'
+            desc = f"Abrindo {app_name}"
+        return {
+            "steps": [{"tool": "applescript_run", "args": {"script": script}, "desc": desc}],
+            "description": desc,
+            "creative": True,
+        }
 
     # Hora / data
     if any(w in text_lower for w in ['que horas', 'hora atual', 'que dia', 'data atual', 'data de hoje']):
         return {"steps": [{"tool": "shell_run", "args": {"command": "date"}, "desc": "Verificando data/hora"}], "description": "Verificando data e hora", "creative": True}
 
-    # Clima / tempo
-    if any(w in text_lower for w in ['clima', 'tempo', 'temperatura', 'previsão', 'previsao', 'weather']):
+    # Clima / tempo — mais restritivo para não confundir "tempo" (time) com weather
+    if any(w in text_lower for w in ['clima', 'temperatura', 'previsão do tempo', 'previsao do tempo', 'weather', 'graus', 'chover', 'chuva', 'sol hoje', 'tempo hoje', 'tempo agora']):
         return {
             "steps": [
-                {"tool": "web_navigate", "args": {"url": "https://wttr.in/?format=3"}, "desc": "Consultando clima"},
                 {"tool": "shell_run", "args": {"command": "curl -s 'wttr.in/?format=3' 2>/dev/null || echo 'Sem acesso ao serviço de clima'"}, "desc": "Buscando clima"},
             ],
             "description": "Vou buscar o clima atual",
