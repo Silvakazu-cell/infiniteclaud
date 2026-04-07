@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>InfiniteClaud — Agent Monitor</title>
+  <style>
+    :root { --bg: #0d1117; --card: #161b22; --border: #30363d; --text: #e6edf3;
+            --dim: #7d8590; --blue: #58a6ff; --green: #3fb950; --yellow: #d29922;
+            --red: #f85149; --cyan: #39c5cf; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--text); font-family: 'SF Mono', monospace;
+           font-size: 13px; min-height: 100vh; }
+    .header { padding: 16px 24px; border-bottom: 1px solid var(--border);
+              display: flex; justify-content: space-between; align-items: center; }
+    .header h1 { font-size: 16px; color: var(--blue); }
+    .header .summary { color: var(--dim); font-size: 12px; }
+    .container { padding: 24px; max-width: 1000px; margin: 0 auto; }
+    .section-title { color: var(--dim); font-size: 11px; text-transform: uppercase;
+                     letter-spacing: 1px; margin-bottom: 12px; margin-top: 24px; }
+    .agent-card { background: var(--card); border: 1px solid var(--border);
+                  border-radius: 6px; padding: 14px 16px; margin-bottom: 8px; }
+    .agent-header { display: flex; justify-content: space-between; align-items: center;
+                    margin-bottom: 8px; }
+    .agent-name { font-weight: 600; color: var(--text); }
+    .agent-meta { color: var(--dim); font-size: 11px; }
+    .progress-row { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+    .progress-bar { flex: 1; height: 6px; background: #21262d; border-radius: 3px;
+                    overflow: hidden; }
+    .progress-fill { height: 100%; border-radius: 3px; transition: width 0.5s ease;
+                     background: var(--blue); }
+    .progress-fill.done { background: var(--green); }
+    .progress-fill.failed { background: var(--red); }
+    .pct { color: var(--blue); font-size: 11px; min-width: 32px; text-align: right; }
+    .agent-footer { display: flex; justify-content: space-between; color: var(--dim); font-size: 11px; }
+    .status-badge { padding: 2px 8px; border-radius: 12px; font-size: 10px; font-weight: 600; }
+    .status-running  { background: rgba(88,166,255,0.15); color: var(--blue); }
+    .status-completed{ background: rgba(63,185,80,0.15);  color: var(--green); }
+    .status-failed   { background: rgba(248,81,73,0.15);  color: var(--red); }
+    .status-pending  { background: rgba(125,133,144,0.15);color: var(--dim); }
+    .totals { background: var(--card); border: 1px solid var(--border); border-radius: 6px;
+              padding: 12px 16px; margin-top: 16px; display: flex; gap: 32px; flex-wrap: wrap; }
+    .total-item label { color: var(--dim); font-size: 10px; text-transform: uppercase;
+                        letter-spacing: 1px; display: block; margin-bottom: 2px; }
+    .total-item span  { color: var(--text); font-size: 15px; font-weight: 600; }
+    .last-action { color: var(--dim); font-size: 11px; font-style: italic; margin-top: 4px;
+                   white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 600px; }
+    #timestamp { color: var(--dim); font-size: 11px; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>&#9889; InfiniteClaud — Agent Monitor</h1>
+    <div class="summary">
+      <span id="active-count">0</span> ativos ·
+      <span id="total-tokens">0</span> tokens ·
+      <span id="timestamp"></span>
+    </div>
+  </div>
+  <div class="container">
+    <div id="active-section">
+      <div class="section-title">Ativos</div>
+      <div id="active-agents"></div>
+    </div>
+    <div id="recent-section">
+      <div class="section-title">Concluídos</div>
+      <div id="recent-agents"></div>
+    </div>
+    <div class="totals" id="totals-bar">
+      <div class="total-item"><label>Total Tokens</label><span id="t-tokens">—</span></div>
+      <div class="total-item"><label>Ativos</label><span id="t-active">0</span></div>
+      <div class="total-item"><label>Concluídos</label><span id="t-done">0</span></div>
+      <div class="total-item"><label>Custo Est.</label><span id="t-cost">$0.000</span></div>
+    </div>
+  </div>
+  <script>
+    function fmt(n) { return n >= 1000 ? (n/1000).toFixed(1)+'K' : n; }
+    function fmtTime(s) { return s < 60 ? s+'s' : Math.floor(s/60)+'m '+(s%60)+'s'; }
+    function cost(tokens, model) {
+      const p = {haiku:0.0008, sonnet:0.003, opus:0.015};
+      const k = (model||'sonnet').toLowerCase().split('-')[0];
+      return ((tokens/1000)*(p[k]||0.003)).toFixed(3);
+    }
+    function card(a) {
+      const pct = a.progress_pct || 0;
+      const fillClass = a.status==='completed' ? 'done' : a.status==='failed' ? 'failed' : '';
+      return `<div class="agent-card">
+        <div class="agent-header">
+          <span class="agent-name">${a.description || a.id}</span>
+          <span class="status-badge status-${a.status}">${a.status.toUpperCase()}</span>
+        </div>
+        <div class="progress-row">
+          <div class="progress-bar"><div class="progress-fill ${fillClass}" style="width:${pct}%"></div></div>
+          <span class="pct">${pct}%</span>
+        </div>
+        <div class="agent-footer">
+          <span>Modelo: ${a.model||'sonnet'}</span>
+          <span>Tokens: ${fmt(a.tokens_used||0)}</span>
+          <span>Custo: $${cost(a.tokens_used||0, a.model)}</span>
+          <span>Tempo: ${fmtTime(a.elapsed_s||0)}</span>
+        </div>
+        <div class="last-action">${a.last_action||''}</div>
+      </div>`;
+    }
+    function render(data) {
+      const ts = new Date().toLocaleTimeString('pt-BR');
+      document.getElementById('timestamp').textContent = ts;
+      const active = data.filter(a => a.status === 'running');
+      const recent = data.filter(a => a.status !== 'running').slice(-5).reverse();
+      document.getElementById('active-agents').innerHTML = active.length ? active.map(card).join('') : '<div style="color:var(--dim);padding:12px">Nenhum agente ativo.</div>';
+      document.getElementById('recent-agents').innerHTML = recent.map(card).join('');
+      document.getElementById('active-count').textContent = active.length;
+      const totalTokens = data.reduce((s,a)=>s+(a.tokens_used||0),0);
+      document.getElementById('total-tokens').textContent = fmt(totalTokens);
+      document.getElementById('t-tokens').textContent = fmt(totalTokens);
+      document.getElementById('t-active').textContent = active.length;
+      document.getElementById('t-done').textContent = data.filter(a=>a.status==='completed').length;
+      const totalCost = data.reduce((s,a)=>s+parseFloat(cost(a.tokens_used||0,a.model)),0);
+      document.getElementById('t-cost').textContent = '$'+totalCost.toFixed(3);
+    }
+    // SSE
+    const evtSource = new EventSource('/api/agents/stream');
+    evtSource.onmessage = (e) => { try { render(JSON.parse(e.data)); } catch(err) {} };
+    evtSource.onerror = () => {
+      // fallback polling
+      setTimeout(()=>fetch('/api/agents').then(r=>r.json()).then(d=>render([...d.active,...d.recent])),2000);
+    };
+  </script>
+</body>
+</html>
