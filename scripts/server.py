@@ -24,5 +24,8 @@ register_native_tools(mcp)
 register_apple_tools(mcp)
 register_shell_tools(mcp)
 
+from tools.snapshot import register_snapshot_tools
+register_snapshot_tools(mcp)
+
 if __name__ == "__main__":
     mcp.run()
