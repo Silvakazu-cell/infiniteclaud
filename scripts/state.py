@@ -1,6 +1,7 @@
 import json
 import os
 from pathlib import Path
+from typing import Optional
 
 CONFIG_PATH = Path(os.path.expanduser("~/.claude/automation/config.json"))
 
@@ -25,6 +26,7 @@ class AppState:
     def __init__(self):
         self.playwright_instance = None
         self.browser = None
+        self.context = None  # BrowserContext para persistência de sessão
         self.page = None
         self.config = load_config()
 
@@ -35,18 +37,51 @@ class AppState:
             self.playwright_instance = sync_playwright().start()
             headless = self.config.get("browser_headless", False)
             self.browser = self.playwright_instance.chromium.launch(headless=headless)
-            self.page = self.browser.new_page()
+            self.context = self.browser.new_context()
+            self.page = self.context.new_page()
         return self.page
 
     def new_page(self):
-        """Abre nova aba."""
+        """Abre nova aba no contexto atual."""
         if not self.browser:
             self.get_page()
-        self.page = self.browser.new_page()
+        if not self.context:
+            self.context = self.browser.new_context()
+        self.page = self.context.new_page()
         return self.page
+
+    async def capture_browser_state(self) -> dict:
+        """Captura estado atual do browser: URL, cookies, localStorage, scroll.
+
+        Retorna {} se o browser não estiver inicializado.
+        """
+        if not self.page or not self.context:
+            return {}
+
+        try:
+            url = self.page.url
+            cookies = self.context.cookies()
+            scroll_position = self.page.evaluate(
+                "() => ({ x: window.scrollX, y: window.scrollY })"
+            )
+            local_storage = self.page.evaluate(
+                "() => { const s = {}; for (let i = 0; i < localStorage.length; i++) { "
+                "const k = localStorage.key(i); s[k] = localStorage.getItem(k); } return s; }"
+            )
+            return {
+                "url": url,
+                "cookies": cookies,
+                "local_storage": local_storage,
+                "scroll_position": scroll_position,
+            }
+        except Exception:
+            return {}
 
     def shutdown(self):
         """Fecha browser e Playwright."""
+        if self.context:
+            self.context.close()
+            self.context = None
         if self.browser:
             self.browser.close()
             self.browser = None
