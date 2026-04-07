@@ -1,0 +1,11 @@
+{
+  "autonomy": "checkpoint",
+  "dangerous_actions": [
+    "fs_delete",
+    "shell_run",
+    "keyboard_hotkey"
+  ],
+  "require_confirm_for_dangerous": true,
+  "browser_headless": false,
+  "screenshot_dir": "~/.claude/automation/screenshots"
+}

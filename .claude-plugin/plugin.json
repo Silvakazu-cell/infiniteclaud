@@ -1,0 +1,26 @@
+{
+  "name": "infiniteclaud",
+  "description": "Agente autônomo completo para Claude Code: 20 ferramentas de automação (web, filesystem, macOS nativo, AppleScript, shell) + orquestrador inteligente de modelos (Haiku/Sonnet/Opus) + dashboard web + Telegram bot. 50x mais rápido que screenshot-based, 90% menos tokens.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Douglas Kazunari",
+    "email": "silvakazu@gmail.com"
+  },
+  "homepage": "https://github.com/douglaskazunari/infiniteclaud",
+  "license": "MIT",
+  "keywords": [
+    "automation",
+    "playwright",
+    "pyautogui",
+    "mcp",
+    "model-router",
+    "telegram",
+    "dashboard",
+    "macos"
+  ],
+  "platforms": ["macos"],
+  "requirements": {
+    "python": ">=3.10",
+    "tools": ["jq"]
+  }
+}

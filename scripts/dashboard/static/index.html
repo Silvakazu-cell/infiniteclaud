@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>InfiniteClaud</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #1a1a2e;
+      --card:     #16213e;
+      --accent:   #0f3460;
+      --hi:       #e94560;
+      --hi2:      #c73652;
+      --text:     #e0e0e0;
+      --muted:    #8892a4;
+      --border:   #1e3a5f;
+      --success:  #2ecc71;
+      --warning:  #f39c12;
+      --error:    #e74c3c;
+      --radius:   10px;
+      --shadow:   0 4px 18px rgba(0,0,0,.45);
+    }
+
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    /* ── SCROLLBARS ── */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
+
+    /* ── LAYOUT ── */
+    #app {
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* ── HEADER ── */
+    header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 12px 20px;
+      background: var(--card);
+      border-bottom: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      z-index: 10;
+      flex-wrap: wrap;
+    }
+
+    .logo {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: var(--hi);
+      font-family: monospace;
+      white-space: nowrap;
+    }
+    .logo span { color: var(--text); }
+
+    .status-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      background: var(--accent);
+      border: 1px solid var(--border);
+    }
+    .dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--success);
+      animation: pulse 2s infinite;
+    }
+    .dot.inactive { background: var(--error); animation: none; }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: .4; }
+    }
+
+    .header-info {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .header-info strong { color: var(--text); }
+
+    .mode-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-left: auto;
+    }
+    .mode-label { color: var(--muted); font-size: 12px; white-space: nowrap; }
+
+    select {
+      background: var(--accent);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 5px 10px;
+      font-size: 13px;
+      cursor: pointer;
+      outline: none;
+    }
+    select:focus { border-color: var(--hi); }
+
+    /* ── MAIN ── */
+    main {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      overflow: hidden;
+    }
+
+    @media (max-width: 640px) {
+      main { grid-template-columns: 1fr; grid-template-rows: auto 1fr; }
+    }
+
+    /* ── SIDEBAR ── */
+    aside {
+      background: var(--card);
+      border-right: 1px solid var(--border);
+      overflow-y: auto;
+      padding: 12px 0;
+    }
+
+    .sidebar-title {
+      padding: 4px 14px 8px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .tool-group { margin-bottom: 4px; }
+
+    .group-header {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--hi);
+      cursor: pointer;
+      user-select: none;
+    }
+    .group-header .arrow {
+      margin-left: auto;
+      transition: transform .2s;
+      font-size: 10px;
+    }
+    .group-header.collapsed .arrow { transform: rotate(-90deg); }
+
+    .group-body { overflow: hidden; }
+    .group-body.collapsed { display: none; }
+
+    .tool-item {
+      padding: 7px 14px 7px 24px;
+      cursor: pointer;
+      border-left: 3px solid transparent;
+      transition: background .15s, border-color .15s;
+    }
+    .tool-item:hover {
+      background: rgba(233,69,96,.08);
+      border-left-color: var(--hi);
+    }
+    .tool-item.active {
+      background: rgba(233,69,96,.14);
+      border-left-color: var(--hi);
+    }
+    .tool-name {
+      font-family: monospace;
+      font-size: 12px;
+      color: var(--text);
+    }
+    .tool-desc {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 1px;
+    }
+    .tool-params {
+      font-size: 10px;
+      color: var(--hi);
+      font-family: monospace;
+      margin-top: 2px;
+    }
+
+    /* ── TERMINAL SECTION ── */
+    section {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      padding: 16px;
+      gap: 12px;
+    }
+
+    .terminal-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      box-shadow: var(--shadow);
+    }
+
+    .card-title {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .card-title .icon { color: var(--hi); }
+
+    .input-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 8px;
+      align-items: end;
+      margin-bottom: 10px;
+    }
+
+    .field { display: flex; flex-direction: column; gap: 4px; }
+    .field label { font-size: 11px; color: var(--muted); font-weight: 600; }
+
+    input[type="text"], textarea {
+      background: var(--bg);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 8px 10px;
+      font-family: monospace;
+      font-size: 13px;
+      width: 100%;
+      outline: none;
+      transition: border-color .2s;
+    }
+    input[type="text"]:focus, textarea:focus { border-color: var(--hi); }
+
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+      max-height: 200px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 18px;
+      border-radius: 6px;
+      border: none;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .15s, transform .1s;
+      white-space: nowrap;
+    }
+    .btn:active { transform: scale(.97); }
+    .btn-primary { background: var(--hi); color: #fff; }
+    .btn-primary:hover { background: var(--hi2); }
+    .btn-primary:disabled { background: var(--muted); cursor: not-allowed; transform: none; }
+    .btn-secondary { background: var(--accent); color: var(--text); border: 1px solid var(--border); }
+    .btn-secondary:hover { border-color: var(--hi); }
+
+    .force-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 4px;
+    }
+    .force-row label { font-size: 12px; color: var(--muted); cursor: pointer; }
+    input[type="checkbox"] {
+      width: 14px; height: 14px;
+      accent-color: var(--hi);
+      cursor: pointer;
+    }
+
+    /* ── RESULT AREA ── */
+    .result-area {
+      flex: 1;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .result-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    #result-box {
+      flex: 1;
+      background: #0d1117;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 12px;
+      font-family: monospace;
+      font-size: 12px;
+      line-height: 1.6;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      word-break: break-all;
+      min-height: 80px;
+      max-height: 260px;
+      color: #58d68d;
+    }
+    #result-box.error { color: var(--error); }
+    #result-box.warning { color: var(--warning); }
+    #result-box.idle { color: var(--muted); }
+
+    /* ── FOOTER / HISTORY ── */
+    footer {
+      background: var(--card);
+      border-top: 1px solid var(--border);
+      max-height: 220px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .footer-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 16px;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .footer-title {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .poll-badge {
+      margin-left: auto;
+      font-size: 10px;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .poll-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--success);
+    }
+    .poll-dot.syncing { animation: pulse .6s infinite; }
+
+    .history-table-wrap {
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+    thead th {
+      position: sticky;
+      top: 0;
+      background: var(--card);
+      text-align: left;
+      padding: 6px 12px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--muted);
+      border-bottom: 1px solid var(--border);
+      z-index: 2;
+    }
+    tbody tr {
+      border-bottom: 1px solid rgba(30,58,95,.5);
+      transition: background .1s;
+    }
+    tbody tr:hover { background: rgba(15,52,96,.4); }
+    tbody td {
+      padding: 5px 12px;
+      vertical-align: top;
+    }
+    .td-ts { color: var(--muted); white-space: nowrap; font-size: 11px; }
+    .td-tool { font-family: monospace; color: var(--hi); }
+    .td-args { font-family: monospace; color: var(--muted); max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .td-result { max-width: 280px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .badge {
+      display: inline-block;
+      padding: 1px 7px;
+      border-radius: 10px;
+      font-size: 10px;
+      font-weight: 700;
+    }
+    .badge-ok  { background: rgba(46,204,113,.15); color: var(--success); }
+    .badge-err { background: rgba(231,76,60,.15); color: var(--error); }
+    .badge-warn { background: rgba(243,156,18,.15); color: var(--warning); }
+
+    #history-empty {
+      text-align: center;
+      color: var(--muted);
+      padding: 18px;
+      font-size: 12px;
+    }
+
+    /* ── SPINNER ── */
+    .spinner {
+      display: inline-block;
+      width: 14px; height: 14px;
+      border: 2px solid var(--border);
+      border-top-color: var(--hi);
+      border-radius: 50%;
+      animation: spin .7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── TOAST ── */
+    #toast {
+      position: fixed;
+      bottom: 20px; right: 20px;
+      background: var(--accent);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 10px 16px;
+      font-size: 13px;
+      box-shadow: var(--shadow);
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity .25s, transform .25s;
+      pointer-events: none;
+      z-index: 100;
+      max-width: 280px;
+    }
+    #toast.show { opacity: 1; transform: translateY(0); }
+    #toast.ok   { border-color: var(--success); color: var(--success); }
+    #toast.err  { border-color: var(--error);   color: var(--error);   }
+
+    /* ── GROUP COLOR ICONS ── */
+    .gi-web        { color: #3498db; }
+    .gi-filesystem { color: #f39c12; }
+    .gi-native     { color: #9b59b6; }
+    .gi-system     { color: #2ecc71; }
+
+    /* ── ASSISTANT MODE ── */
+    .assistant-section { margin-bottom: 20px; }
+    .assistant-hint { color: #888; font-size: 12px; margin: 5px 0; }
+    #assistantInput { width: 100%; background: #0d1b2a; color: #e0e0e0; border: 1px solid #0f3460; border-radius: 6px; padding: 12px; font-size: 16px; font-family: sans-serif; resize: vertical; }
+    #assistantInput:focus { border-color: var(--hi); outline: none; }
+    #assistantBtn { background: #e94560; color: white; border: none; padding: 10px 24px; border-radius: 6px; cursor: pointer; font-size: 14px; margin-top: 8px; }
+    #assistantBtn:hover { background: #c73a52; }
+    #assistantBtn:disabled { background: var(--muted); cursor: not-allowed; }
+    .parsed-info { background: #0f3460; padding: 8px 12px; border-radius: 4px; margin-bottom: 8px; font-size: 13px; color: #4fc3f7; }
+    .divider { border: none; border-top: 1px solid #0f3460; margin: 20px 0; }
+    #assistantOutput { font-family: monospace; font-size: 13px; line-height: 1.5; }
+  </style>
+</head>
+<body>
+<div id="app">
+
+  <!-- ══════════ HEADER ══════════ -->
+  <header>
+    <div class="logo">Infinite<span>Claud</span></div>
+
+    <div class="status-badge">
+      <div class="dot" id="status-dot"></div>
+      <span id="status-text">conectando…</span>
+    </div>
+
+    <div class="header-info">
+      <span>ferramentas:</span>
+      <strong id="tools-count">—</strong>
+    </div>
+
+    <div class="mode-group">
+      <span class="mode-label">autonomia:</span>
+      <select id="autonomy-select" title="Modo de autonomia">
+        <option value="checkpoint">checkpoint</option>
+        <option value="full">full</option>
+        <option value="supervised">supervised</option>
+      </select>
+    </div>
+  </header>
+
+  <!-- ══════════ MAIN ══════════ -->
+  <main>
+
+    <!-- ── SIDEBAR ── -->
+    <aside>
+      <div class="sidebar-title">Ferramentas</div>
+      <div id="tools-list">
+        <div style="padding:14px;color:var(--muted);font-size:12px;">carregando…</div>
+      </div>
+    </aside>
+
+    <!-- ── TERMINAL SECTION ── -->
+    <section>
+
+      <div class="terminal-card">
+        <div class="card-title"><span class="icon">⬡</span> Terminal de Execução</div>
+
+        <div class="assistant-section">
+          <h3 style="font-size:13px;font-weight:700;letter-spacing:1px;color:var(--hi);margin-bottom:4px;">🤖 MODO ASSISTENTE</h3>
+          <p class="assistant-hint">Digite em linguagem natural. Ex: "navegue para google.com", "screenshot", "execute ls"</p>
+          <textarea id="assistantInput" placeholder="Diga o que quer fazer..." rows="2"></textarea>
+          <button id="assistantBtn" onclick="runAssistant()">🤖 Executar</button>
+          <div id="assistantResult" class="result-area" style="display:none;margin-top:10px;">
+            <div id="assistantParsed" class="parsed-info"></div>
+            <div id="assistantOutput"></div>
+          </div>
+        </div>
+        <hr class="divider">
+
+        <div class="input-row">
+          <div class="field" style="flex:1">
+            <label for="tool-input">Ferramenta</label>
+            <input type="text" id="tool-input" placeholder="ex: web_navigate" autocomplete="off" spellcheck="false">
+          </div>
+          <button class="btn btn-primary" id="run-btn" onclick="executeTool()">
+            <span id="run-label">▶ Executar</span>
+          </button>
+        </div>
+
+        <div class="field">
+          <label for="args-input">Argumentos (JSON)</label>
+          <textarea id="args-input" placeholder='{"url": "https://example.com"}'></textarea>
+        </div>
+
+        <div class="force-row">
+          <input type="checkbox" id="force-check">
+          <label for="force-check">force (ignorar checkpoint)</label>
+        </div>
+      </div>
+
+      <div class="result-area">
+        <div class="result-header">
+          <div class="card-title" style="margin:0"><span class="icon">◈</span> Resultado</div>
+          <button class="btn btn-secondary" style="padding:4px 10px;font-size:11px" onclick="clearResult()">limpar</button>
+        </div>
+        <pre id="result-box" class="idle">// aguardando execução…</pre>
+      </div>
+
+    </section>
+  </main>
+
+  <!-- ══════════ FOOTER / HISTORY ══════════ -->
+  <footer>
+    <div class="footer-header">
+      <span class="footer-title">Histórico / Logs</span>
+      <div class="poll-badge">
+        <div class="poll-dot" id="poll-dot"></div>
+        <span id="poll-label">poll 5s</span>
+      </div>
+      <button class="btn btn-secondary" style="padding:3px 10px;font-size:11px;margin-left:8px" onclick="fetchHistory()">↻ atualizar</button>
+    </div>
+    <div class="history-table-wrap">
+      <div id="history-empty" style="display:none">sem histórico ainda</div>
+      <table id="history-table">
+        <thead>
+          <tr>
+            <th>Hora</th>
+            <th>Ferramenta</th>
+            <th>Args</th>
+            <th>Resultado</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="history-body"></tbody>
+      </table>
+    </div>
+  </footer>
+
+</div>
+
+<!-- ══════════ TOAST ══════════ -->
+<div id="toast"></div>
+
+<!-- ══════════ JAVASCRIPT ══════════ -->
+<script>
+'use strict';
+
+/* ─── State ─── */
+let allTools = {};
+let activeToolItem = null;
+let pollTimer = null;
+
+/* ─── Init ─── */
+document.addEventListener('DOMContentLoaded', () => {
+  fetchStatus();
+  fetchTools();
+  fetchHistory();
+  startPolling();
+
+  document.getElementById('autonomy-select').addEventListener('change', onAutonomyChange);
+
+  // Allow Tab to insert spaces in textarea
+  document.getElementById('args-input').addEventListener('keydown', e => {
+    if (e.key === 'Tab') {
+      e.preventDefault();
+      const ta = e.target;
+      const s = ta.selectionStart, end = ta.selectionEnd;
+      ta.value = ta.value.substring(0, s) + '  ' + ta.value.substring(end);
+      ta.selectionStart = ta.selectionEnd = s + 2;
+    }
+  });
+
+  // Ctrl+Enter / Cmd+Enter to run
+  document.getElementById('args-input').addEventListener('keydown', e => {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') executeTool();
+  });
+  document.getElementById('tool-input').addEventListener('keydown', e => {
+    if (e.key === 'Enter') executeTool();
+  });
+});
+
+/* ─── API helpers ─── */
+async function apiFetch(path, opts = {}) {
+  const res = await fetch(path, { headers: { 'Content-Type': 'application/json' }, ...opts });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return res.json();
+}
+
+/* ─── Status ─── */
+async function fetchStatus() {
+  try {
+    const d = await apiFetch('/api/status');
+    const dot = document.getElementById('status-dot');
+    const txt = document.getElementById('status-text');
+    const cnt = document.getElementById('tools-count');
+    const sel = document.getElementById('autonomy-select');
+
+    dot.className = 'dot' + (d.status === 'active' ? '' : ' inactive');
+    txt.textContent = d.status === 'active' ? 'ativo' : 'inativo';
+    cnt.textContent = d.tools_count ?? '—';
+    if (d.autonomy) sel.value = d.autonomy;
+  } catch (e) {
+    document.getElementById('status-text').textContent = 'offline';
+    document.getElementById('status-dot').className = 'dot inactive';
+  }
+}
+
+/* ─── Tools ─── */
+async function fetchTools() {
+  try {
+    allTools = await apiFetch('/api/tools');
+    renderTools(allTools);
+  } catch (e) {
+    document.getElementById('tools-list').innerHTML =
+      '<div style="padding:14px;color:var(--error);font-size:12px;">erro ao carregar ferramentas</div>';
+  }
+}
+
+const GROUP_META = {
+  web:        { label: 'Web',        icon: '🌐', cls: 'gi-web' },
+  filesystem: { label: 'Filesystem', icon: '📁', cls: 'gi-filesystem' },
+  native:     { label: 'Native',     icon: '🖥', cls: 'gi-native' },
+  system:     { label: 'System',     icon: '⚙', cls: 'gi-system' },
+};
+
+function renderTools(tools) {
+  const container = document.getElementById('tools-list');
+  container.innerHTML = '';
+
+  for (const [group, items] of Object.entries(tools)) {
+    const meta = GROUP_META[group] || { label: group, icon: '◆', cls: '' };
+    const groupEl = document.createElement('div');
+    groupEl.className = 'tool-group';
+
+    const hdr = document.createElement('div');
+    hdr.className = 'group-header';
+    hdr.innerHTML = `<span class="${meta.cls}">${meta.icon}</span>${meta.label}<span class="arrow">▾</span>`;
+    hdr.addEventListener('click', () => toggleGroup(hdr, body));
+
+    const body = document.createElement('div');
+    body.className = 'group-body';
+
+    for (const t of items) {
+      const item = document.createElement('div');
+      item.className = 'tool-item';
+      item.dataset.tool = t.name;
+      item.innerHTML = `
+        <div class="tool-name">${t.name}</div>
+        <div class="tool-desc">${t.desc}</div>
+        <div class="tool-params">(${t.params})</div>
+      `;
+      item.addEventListener('click', () => fillTerminal(t, item));
+      body.appendChild(item);
+    }
+
+    groupEl.appendChild(hdr);
+    groupEl.appendChild(body);
+    container.appendChild(groupEl);
+  }
+}
+
+function toggleGroup(hdr, body) {
+  const collapsed = body.classList.toggle('collapsed');
+  hdr.classList.toggle('collapsed', collapsed);
+}
+
+/* ─── Fill terminal from sidebar click ─── */
+function fillTerminal(tool, itemEl) {
+  if (activeToolItem) activeToolItem.classList.remove('active');
+  activeToolItem = itemEl;
+  itemEl.classList.add('active');
+
+  document.getElementById('tool-input').value = tool.name;
+
+  // Build a skeleton args object from params string
+  const params = tool.params.split(',').map(p => p.trim().replace('?',''));
+  const skeleton = {};
+  for (const p of params) {
+    if (p) skeleton[p] = '';
+  }
+  const argsStr = JSON.stringify(skeleton, null, 2);
+  document.getElementById('args-input').value = argsStr === '{}' ? '{}' : argsStr;
+
+  // Focus to args textarea
+  document.getElementById('args-input').focus();
+}
+
+/* ─── Execute ─── */
+async function executeTool() {
+  const toolName = document.getElementById('tool-input').value.trim();
+  if (!toolName) { showToast('Informe o nome da ferramenta.', 'err'); return; }
+
+  let args = {};
+  const argsRaw = document.getElementById('args-input').value.trim();
+  if (argsRaw && argsRaw !== '{}') {
+    try {
+      args = JSON.parse(argsRaw);
+    } catch (e) {
+      showToast('JSON inválido nos argumentos.', 'err');
+      setResult(`Erro: JSON inválido\n${e.message}`, 'error');
+      return;
+    }
+  }
+
+  // Filter out empty-string values from skeleton
+  for (const k of Object.keys(args)) {
+    if (args[k] === '') delete args[k];
+  }
+
+  const force = document.getElementById('force-check').checked;
+  const btn = document.getElementById('run-btn');
+  const lbl = document.getElementById('run-label');
+
+  btn.disabled = true;
+  lbl.innerHTML = '<span class="spinner"></span>';
+
+  setResult(`Executando: ${toolName}\nArgs: ${JSON.stringify(args, null, 2)}\n…`, 'idle');
+
+  try {
+    const data = await apiFetch('/api/run', {
+      method: 'POST',
+      body: JSON.stringify({ tool: toolName, args, force }),
+    });
+
+    if (data.requires_confirm) {
+      setResult(`⚠ Ação destrutiva detectada.\nUse "force" para prosseguir no modo checkpoint.\n\n${data.warning}`, 'warning');
+      showToast('Requer confirmação (force)', 'warn');
+    } else if (data.success) {
+      const out = typeof data.result === 'object'
+        ? JSON.stringify(data.result, null, 2)
+        : String(data.result ?? '(sem resultado)');
+      setResult(out, 'ok');
+      showToast('Executado com sucesso', 'ok');
+    } else {
+      setResult(`Erro: ${data.error || JSON.stringify(data)}`, 'error');
+      showToast('Falha na execução', 'err');
+    }
+
+    // Refresh history
+    fetchHistory();
+  } catch (e) {
+    setResult(`Erro de rede: ${e.message}`, 'error');
+    showToast('Erro de conexão', 'err');
+  } finally {
+    btn.disabled = false;
+    lbl.textContent = '▶ Executar';
+  }
+}
+
+function setResult(text, mode = 'ok') {
+  const box = document.getElementById('result-box');
+  box.textContent = text;
+  box.className = mode === 'ok' ? '' : mode === 'warning' ? 'warning' : mode === 'idle' ? 'idle' : 'error';
+}
+
+function clearResult() {
+  setResult('// aguardando execução…', 'idle');
+}
+
+/* ─── Autonomy ─── */
+async function onAutonomyChange(e) {
+  const val = e.target.value;
+  try {
+    await apiFetch('/api/config', { method: 'PUT', body: JSON.stringify({ autonomy: val }) });
+    showToast(`Autonomia: ${val}`, 'ok');
+  } catch (err) {
+    showToast('Erro ao atualizar config', 'err');
+  }
+}
+
+/* ─── History ─── */
+async function fetchHistory() {
+  const dot = document.getElementById('poll-dot');
+  const lbl = document.getElementById('poll-label');
+  dot.classList.add('syncing');
+  lbl.textContent = 'atualizando…';
+
+  try {
+    const rows = await apiFetch('/api/history');
+    renderHistory(rows);
+  } catch (e) {
+    // silent fail for polling
+  } finally {
+    dot.classList.remove('syncing');
+    lbl.textContent = 'poll 5s';
+  }
+}
+
+function renderHistory(rows) {
+  const tbody = document.getElementById('history-body');
+  const empty = document.getElementById('history-empty');
+  const table = document.getElementById('history-table');
+
+  if (!rows || rows.length === 0) {
+    table.style.display = 'none';
+    empty.style.display = 'block';
+    return;
+  }
+
+  table.style.display = '';
+  empty.style.display = 'none';
+
+  const reversed = [...rows].reverse();
+  tbody.innerHTML = reversed.map(r => {
+    const ts = r.ts ? new Date(r.ts).toLocaleTimeString('pt-BR') : '—';
+    const tool = escHtml(r.tool || '—');
+    const argsStr = r.args ? escHtml(JSON.stringify(r.args)) : '{}';
+    const resultStr = r.result
+      ? escHtml(String(r.result).substring(0, 120))
+      : r.error
+        ? escHtml(String(r.error).substring(0, 120))
+        : '—';
+    let badge;
+    if (r.requires_confirm) {
+      badge = '<span class="badge badge-warn">⚠ confirm</span>';
+    } else if (r.success) {
+      badge = '<span class="badge badge-ok">✓ ok</span>';
+    } else {
+      badge = '<span class="badge badge-err">✗ erro</span>';
+    }
+    return `<tr>
+      <td class="td-ts">${ts}</td>
+      <td class="td-tool">${tool}</td>
+      <td class="td-args" title="${argsStr}">${argsStr}</td>
+      <td class="td-result" title="${resultStr}">${resultStr}</td>
+      <td>${badge}</td>
+    </tr>`;
+  }).join('');
+}
+
+function escHtml(s) {
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+/* ─── Polling ─── */
+function startPolling() {
+  pollTimer = setInterval(() => {
+    fetchHistory();
+    fetchStatus();
+  }, 5000);
+}
+
+/* ─── Toast ─── */
+let toastTimer = null;
+function showToast(msg, type = 'ok') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = `show ${type}`;
+  if (toastTimer) clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { t.className = ''; }, 3000);
+}
+
+/* ─── Assistant Mode ─── */
+async function runAssistant() {
+  const input = document.getElementById('assistantInput');
+  const text = input.value.trim();
+  if (!text) return;
+
+  const btn = document.getElementById('assistantBtn');
+  btn.disabled = true;
+  btn.textContent = '⏳ Processando...';
+
+  const resultDiv = document.getElementById('assistantResult');
+  const parsedDiv = document.getElementById('assistantParsed');
+  const outputDiv = document.getElementById('assistantOutput');
+  resultDiv.style.display = 'block';
+
+  try {
+    const res = await fetch('/api/assistant', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({text})
+    });
+    const data = await res.json();
+
+    if (data.error) {
+      parsedDiv.textContent = '';
+      outputDiv.innerHTML = `<span style="color:#e94560">${data.error.replace(/\n/g, '<br>')}</span>`;
+    } else {
+      parsedDiv.innerHTML = `🔧 <strong>${data.parsed.tool}</strong>(${escHtml(JSON.stringify(data.parsed.args))}) — ${escHtml(data.parsed.description)}`;
+      if (data.result && data.result.success) {
+        outputDiv.innerHTML = `<span style="color:#4caf50">✅ ${escHtml(String(data.result.result).substring(0, 2000))}</span>`;
+      } else if (data.result && data.result.warning) {
+        outputDiv.innerHTML = `<span style="color:#ff9800">⚠️ ${escHtml(data.result.warning)}</span>`;
+      } else {
+        outputDiv.innerHTML = `<span style="color:#e94560">❌ ${escHtml(String(data.result?.error || 'Erro desconhecido'))}</span>`;
+      }
+    }
+  } catch(e) {
+    parsedDiv.textContent = '';
+    outputDiv.innerHTML = `<span style="color:#e94560">Erro de conexão: ${escHtml(e.message)}</span>`;
+  }
+
+  btn.disabled = false;
+  btn.textContent = '🤖 Executar';
+}
+
+// Ctrl+Enter / Cmd+Enter no campo assistente
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('assistantInput')?.addEventListener('keydown', function(e) {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+      e.preventDefault();
+      runAssistant();
+    }
+  });
+});
+</script>
+</body>
+</html>

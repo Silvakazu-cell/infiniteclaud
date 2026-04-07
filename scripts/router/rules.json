@@ -1,0 +1,7 @@
+{
+  "description": "Regras customizáveis do InfiniteClaud Model Router. Edite os patterns para ajustar a classificação.",
+  "opus_patterns": "(cod[eo]|program(ar|ação|ming)?|implement|função|function|bug|debug|desenvolv|script|\\bapi\\b|database|banco de dados|framework|refactor|refatorar|testes?|deploy|\\bgit\\b|docker|kubernetes|typescript|javascript|python|\\brust\\b|\\bjava\\b|react|vue|angular|método|method|algoritmo|algorithm|syntax|lint|\\bpackage\\b|\\bmodule\\b|library|biblioteca|\\bclass\\b|variavel|variable|endpoint|backend|frontend|servidor|server|commit|pull request|\\bpr\\b|repositorio|repository)",
+  "sonnet_patterns": "(anali[sz]|compar|explica|estrateg|plane[jg]|avali|decisão|raciocin|complex|arquitetura|pesquis|investig|filosof|histor|economi|politic|científic|research|design system|argumen|justif|ponderar|pros e contras|vantagens|desvantagens|detalhad|aprofund)",
+  "default_model": "haiku",
+  "log_enabled": true
+}
