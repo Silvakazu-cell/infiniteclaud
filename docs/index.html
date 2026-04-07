@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InfiniteClaud — Autonomous Automation for Claude Code</title>
+    <meta name="description" content="20 MCP tools, intelligent model router, web dashboard & Telegram bot. 50x faster than screenshot-based, 90% fewer tokens.">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #D4A843;
+            --gold-light: #F2D275;
+            --gold-dark: #A07C2A;
+            --black: #0A0A0A;
+            --dark: #111111;
+            --dark-card: #1A1A1A;
+            --dark-border: #2A2A2A;
+            --white: #F5F0E8;
+            --gray: #888880;
+            --red: #E94560;
+            --green: #4ECCA3;
+            --blue: #4FC3F7;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: var(--black);
+            color: var(--white);
+            font-family: 'DM Sans', sans-serif;
+            line-height: 1.6;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        /* Hero */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 40px 20px;
+            background: radial-gradient(ellipse at 50% 30%, rgba(212,168,67,0.06) 0%, transparent 60%);
+        }
+        .badge {
+            display: inline-block;
+            padding: 6px 20px;
+            border: 1px solid var(--gold-dark);
+            border-radius: 20px;
+            font-size: 11px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 40px;
+        }
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(40px, 7vw, 80px);
+            font-weight: 900;
+            color: var(--gold);
+            line-height: 1.1;
+        }
+        .subtitle {
+            font-size: clamp(16px, 2.5vw, 20px);
+            color: var(--gray);
+            font-weight: 300;
+            margin-top: 16px;
+            max-width: 600px;
+        }
+        .hero-line {
+            width: 60px;
+            height: 1px;
+            background: var(--gold);
+            margin: 40px 0;
+        }
+        .install-box {
+            background: var(--dark-card);
+            border: 1px solid var(--gold-dark);
+            border-radius: 12px;
+            padding: 16px 32px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 15px;
+            color: var(--gold-light);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .install-box:hover {
+            border-color: var(--gold);
+            box-shadow: 0 0 30px rgba(212,168,67,0.15);
+        }
+        .install-hint {
+            font-size: 12px;
+            color: var(--gray);
+            margin-top: 10px;
+        }
+
+        /* Sections */
+        section {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 80px 24px;
+        }
+        h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+        .section-sub {
+            text-align: center;
+            color: var(--gray);
+            font-size: 14px;
+            margin-bottom: 50px;
+        }
+
+        /* Metrics */
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        .metric {
+            background: var(--dark-card);
+            border: 1px solid var(--dark-border);
+            border-radius: 12px;
+            padding: 28px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        .metric:hover {
+            border-color: var(--gold-dark);
+            transform: translateY(-3px);
+        }
+        .metric-val {
+            font-family: 'Playfair Display', serif;
+            font-size: 42px;
+            font-weight: 900;
+            color: var(--gold);
+        }
+        .metric-label {
+            font-size: 12px;
+            color: var(--gray);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 4px;
+        }
+
+        /* Features */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+        .feature {
+            background: var(--dark-card);
+            border: 1px solid var(--dark-border);
+            border-radius: 12px;
+            padding: 28px;
+            position: relative;
+            overflow: hidden;
+        }
+        .feature::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+        }
+        .feature:nth-child(1)::before { background: var(--blue); }
+        .feature:nth-child(2)::before { background: var(--green); }
+        .feature:nth-child(3)::before { background: var(--gold); }
+        .feature:nth-child(4)::before { background: var(--red); }
+        .feature:nth-child(5)::before { background: var(--blue); }
+        .feature:nth-child(6)::before { background: var(--green); }
+        .feature h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+        .feature p { font-size: 13px; color: var(--gray); }
+
+        /* Comparison */
+        .compare {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+        .compare-card {
+            background: var(--dark-card);
+            border: 1px solid var(--dark-border);
+            border-radius: 12px;
+            padding: 28px;
+        }
+        .compare-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            margin-bottom: 16px;
+        }
+        .compare-card.them h3 { color: var(--gray); }
+        .compare-card.us h3 { color: var(--gold); }
+        .compare-card.us { border-color: var(--gold-dark); }
+        .compare-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(42,42,42,0.5);
+            font-size: 13px;
+        }
+        .compare-item:last-child { border: none; }
+        .tag { display: inline-block; padding: 2px 8px; border-radius: 3px; font-size: 11px; font-weight: 700; font-family: 'JetBrains Mono', monospace; }
+        .tag-red { background: rgba(233,69,96,0.15); color: var(--red); }
+        .tag-green { background: rgba(78,204,163,0.15); color: var(--green); }
+
+        /* Tools */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+        }
+        .tool-group {
+            background: var(--dark-card);
+            border: 1px solid var(--dark-border);
+            border-radius: 10px;
+            padding: 20px;
+        }
+        .tool-group h4 {
+            font-size: 13px;
+            color: var(--gold);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+        .tool-group code {
+            display: inline-block;
+            background: rgba(212,168,67,0.08);
+            color: var(--white);
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 11px;
+            margin: 2px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* CTA */
+        .cta {
+            text-align: center;
+            padding: 80px 24px;
+        }
+        .cta-quote {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(22px, 4vw, 38px);
+            font-style: italic;
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+        .cta-quote strong { color: var(--gold); font-style: normal; }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 30px;
+            border-top: 1px solid var(--dark-border);
+            font-size: 12px;
+            color: rgba(136,136,128,0.4);
+        }
+
+        @media (max-width: 768px) {
+            .compare { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="hero">
+    <div class="badge">Claude Code Plugin</div>
+    <h1>InfiniteClaud</h1>
+    <p class="subtitle">Autonomous automation agent for Claude Code. 20 MCP tools, intelligent model router, web dashboard & Telegram bot.</p>
+    <div class="hero-line"></div>
+    <div class="install-box" onclick="navigator.clipboard.writeText('claude plugin install --from github Silvakazu-cell/infiniteclaud')">
+        claude plugin install --from github Silvakazu-cell/infiniteclaud
+    </div>
+    <p class="install-hint">Click to copy install command</p>
+</div>
+
+<section>
+    <h2>Why InfiniteClaud?</h2>
+    <p class="section-sub">Direct API calls instead of screenshots. Faster, cheaper, more precise.</p>
+    <div class="metrics">
+        <div class="metric"><div class="metric-val">50x</div><div class="metric-label">Faster than screenshot</div></div>
+        <div class="metric"><div class="metric-val">90%</div><div class="metric-label">Fewer tokens</div></div>
+        <div class="metric"><div class="metric-val">20</div><div class="metric-label">Specialized tools</div></div>
+        <div class="metric"><div class="metric-val">3</div><div class="metric-label">Access interfaces</div></div>
+    </div>
+</section>
+
+<section>
+    <h2>Features</h2>
+    <p class="section-sub">Everything you need for full Mac automation</p>
+    <div class="features">
+        <div class="feature">
+            <h3>Web Automation</h3>
+            <p>8 Playwright tools: navigate, click, type, extract, screenshot, wait, scroll, eval. Direct DOM access — no pixel guessing.</p>
+        </div>
+        <div class="feature">
+            <h3>Model Router</h3>
+            <p>Auto-routes each prompt to Haiku (simple), Sonnet (medium), or Opus (complex). Customizable rules. ~90% token savings.</p>
+        </div>
+        <div class="feature">
+            <h3>Native macOS</h3>
+            <p>PyAutoGUI mouse/keyboard control + AppleScript for native apps. Open Spotify, control Finder, take screenshots.</p>
+        </div>
+        <div class="feature">
+            <h3>Telegram Bot</h3>
+            <p>Control your Mac from anywhere. Natural language, persistent memory, self-learning with fuzzy matching.</p>
+        </div>
+        <div class="feature">
+            <h3>Web Dashboard</h3>
+            <p>FastAPI-powered dashboard at localhost:8080. REST API, NLP assistant mode, real-time logs. Accessible via Tailscale.</p>
+        </div>
+        <div class="feature">
+            <h3>Smart Autonomy</h3>
+            <p>Three modes: full (no confirmation), checkpoint (pause on destructive), plan_first (show plan before acting).</p>
+        </div>
+    </div>
+</section>
+
+<section>
+    <h2>vs Claude Computer Use</h2>
+    <p class="section-sub">Side-by-side comparison</p>
+    <div class="compare">
+        <div class="compare-card them">
+            <h3>Claude Computer Use</h3>
+            <div class="compare-item"><span>Speed</span><span class="tag tag-red">2-5s/action</span></div>
+            <div class="compare-item"><span>Approach</span><span>Screenshot → Vision</span></div>
+            <div class="compare-item"><span>Token overhead</span><span class="tag tag-red">+500/action</span></div>
+            <div class="compare-item"><span>Remote access</span><span class="tag tag-red">No</span></div>
+            <div class="compare-item"><span>Model routing</span><span class="tag tag-red">Fixed model</span></div>
+            <div class="compare-item"><span>Learning</span><span class="tag tag-red">No memory</span></div>
+            <div class="compare-item"><span>Open source</span><span class="tag tag-red">No</span></div>
+        </div>
+        <div class="compare-card us">
+            <h3>InfiniteClaud</h3>
+            <div class="compare-item"><span>Speed</span><span class="tag tag-green">&lt;100ms/action</span></div>
+            <div class="compare-item"><span>Approach</span><span>DOM + API direct</span></div>
+            <div class="compare-item"><span>Token overhead</span><span class="tag tag-green">0 tokens</span></div>
+            <div class="compare-item"><span>Remote access</span><span class="tag tag-green">Telegram + Web</span></div>
+            <div class="compare-item"><span>Model routing</span><span class="tag tag-green">Haiku/Sonnet/Opus</span></div>
+            <div class="compare-item"><span>Learning</span><span class="tag tag-green">Persistent memory</span></div>
+            <div class="compare-item"><span>Open source</span><span class="tag tag-green">MIT License</span></div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <h2>20 Tools</h2>
+    <p class="section-sub">Organized by category</p>
+    <div class="tools-grid">
+        <div class="tool-group">
+            <h4>Web (Playwright)</h4>
+            <code>web_navigate</code><code>web_click</code><code>web_type</code><code>web_extract</code><code>web_screenshot</code><code>web_wait</code><code>web_scroll</code><code>web_eval</code>
+        </div>
+        <div class="tool-group">
+            <h4>Filesystem</h4>
+            <code>fs_read</code><code>fs_write</code><code>fs_list</code><code>fs_move</code><code>fs_delete</code>
+        </div>
+        <div class="tool-group">
+            <h4>Native macOS</h4>
+            <code>mouse_click</code><code>mouse_move</code><code>keyboard_type</code><code>keyboard_hotkey</code><code>screen_screenshot</code>
+        </div>
+        <div class="tool-group">
+            <h4>System</h4>
+            <code>applescript_run</code><code>shell_run</code>
+        </div>
+    </div>
+</section>
+
+<div class="cta">
+    <p class="cta-quote">
+        Computer Use sees the screen.<br>
+        InfiniteClaud <strong>understands the machine.</strong>
+    </p>
+    <div class="hero-line" style="margin: 30px auto;"></div>
+    <div class="install-box" onclick="navigator.clipboard.writeText('claude plugin install --from github Silvakazu-cell/infiniteclaud')" style="display:inline-block">
+        claude plugin install --from github Silvakazu-cell/infiniteclaud
+    </div>
+    <p class="install-hint">Click to copy — works with any Claude Code subscription</p>
+</div>
+
+<footer>
+    <p style="font-family:'Playfair Display',serif; font-size:18px; color:var(--gold); margin-bottom:8px;">InfiniteClaud</p>
+    <p>MIT License &middot; Made by Douglas Kazunari &middot; 2026</p>
+    <p style="margin-top:8px;"><a href="https://github.com/Silvakazu-cell/infiniteclaud" style="color:var(--gray);">GitHub</a></p>
+</footer>
+
+</body>
+</html>
