@@ -1,0 +1,189 @@
+# InfiniteClaud .gitignore
+# Segurança: Impede commit acidental de credenciais e arquivos sensíveis
+
+# ==================== ANDROID ====================
+# Keystores e certificados Android
+keystore.jks
+*.jks
+*.key
+*.keystore
+*.p12
+*.pfx
+
+# Android build outputs
+android/app/build/
+android/build/
+android/.gradle
+*.apk
+*.aab
+local.properties
+
+# ==================== iOS ====================
+# Certificados e provisionamento iOS
+*.p8
+*.cer
+*.p12
+*.mobileprovision
+*.mobileprovision.tmp
+*.p7b
+*.pvk
+*.certSigningRequest
+
+# Xcode build
+ios/App/Pods/
+ios/Pods/
+ios/App/build/
+ios/App/.derived
+*.xcarchive
+*.ipa
+*.dSYM/
+
+# ==================== CREDENCIAIS & SECRETS ====================
+# Environment variables (NUNCA commite credenciais aqui)
+.env
+.env.local
+.env.*.local
+.env.production.local
+.env.development.local
+.env.test.local
+
+# Arquivos de configuração sensíveis
+config.json
+secrets.json
+credentials.json
+firebase-credentials.json
+google-services.json
+GoogleService-Info.plist
+
+# API keys e tokens
+*.key
+*.pem
+*.pub
+*.asc
+
+# ==================== BANCO DE DADOS ====================
+*.db
+*.sqlite
+*.sqlite3
+*.realm
+
+# ==================== DEPENDENCIES ====================
+node_modules/
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+composer.lock
+Gemfile.lock
+Pipfile.lock
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# ==================== IDE & EDITORES ====================
+.vscode/
+!.vscode/settings.json
+!.vscode/extensions.json
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+*.sublime-project
+*.sublime-workspace
+.vim/
+.emacs.d/
+
+# ==================== BUILD OUTPUTS ====================
+dist/
+build/
+out/
+.next/
+.nuxt/
+coverage/
+.nyc_output/
+*.tsbuildinfo
+
+# ==================== LOGS ====================
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.pnpm-debug.log*
+debug.log
+
+# ==================== SISTEMA OPERACIONAL ====================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Desktop.ini
+
+# ==================== TESTS ====================
+.coverage/
+.pytest_cache/
+junit.xml
+test-results/
+coverage.xml
+
+# ==================== TEMP FILES ====================
+*.tmp
+*.bak
+*.backup
+*~
+.tmp/
+temp/
+tmp/
+
+# ==================== PROJETO ESPECÍFICO ====================
+# Capacitor
+android/capacitor-cordova-android-plugins/
+ios/Capacitor/Capacitor-Bridging-Header.h
+
+# Firebase local emulator
+firebase-debug.log
+
+# App específica
+*.jks
+sign-and-deploy.sh.bak
+
+# ==================== DOCUMENTAÇÃO LOCAL ====================
+# Planos locais (não commitar planos pessoais)
+*.plan
+.claude/plans/
+
+# Histórico local
+.history/
+.local/
+
+# ==================== GIT ====================
+.git/
+.gitmodules
+.gitignore.local

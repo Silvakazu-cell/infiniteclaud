@@ -2,6 +2,8 @@
 
 **Agente autônomo completo para Claude Code** — 50x mais rápido que screenshot-based, 90% menos tokens.
 
+> 📌 **Importante:** Este repositório contém o **plugin/MCP server InfiniteClaud**, uma ferramenta de automação para Claude Code. **Não é um aplicativo mobile** pronto para publicar nas App Stores. Se você quer criar um app Lovable para publicar, veja a seção [🚀 Lançamento de Apps Lovable](#-lançamento-de-apps-lovable-em-app-stores) para um guia completo de como fazê-lo.
+
 ## O que é
 
 Plugin que transforma o Claude Code em um agente de automação completo com:
