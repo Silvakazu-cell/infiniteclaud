@@ -1,0 +1,27 @@
+{
+  "appId": "com.yourcompany.lovableapp",
+  "appName": "Lovable App",
+  "webDir": "dist",
+  "bundledWebRuntime": false,
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 0
+    },
+    "FirebaseMessaging": {
+      "senderId": "YOUR_SENDER_ID"
+    },
+    "GoogleAnalytics": {
+      "trackingId": "YOUR_TRACKING_ID"
+    }
+  },
+  "server": {
+    "url": "http://localhost:8100",
+    "cleartext": true
+  },
+  "ios": {
+    "contentInset": "automatic"
+  },
+  "android": {
+    "allowMixedContent": true
+  }
+}
