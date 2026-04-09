@@ -608,6 +608,195 @@
     </div>
 </div>
 
+<!-- ONBOARDING MODAL -->
+<div id="onboarding-overlay" class="onboarding-overlay">
+    <div class="onboarding-modal">
+        <!-- Step 1: Bem-vindo -->
+        <div class="onboarding-step active" id="step-1">
+            <div class="step-header">
+                <span class="step-counter">Passo 1 de 6</span>
+                <button onclick="closeOnboarding()" class="close-btn">✕</button>
+            </div>
+            <div class="step-content">
+                <div class="step-icon">🚀</div>
+                <h2>Bem-vindo ao InfiniteClaud</h2>
+                <p>O agente autônomo mais poderoso para Claude Code. Vamos guiá-lo através da configuração em alguns passos simples.</p>
+            </div>
+            <div class="step-actions">
+                <button class="btn-secondary" onclick="nextStep()">Começar →</button>
+            </div>
+        </div>
+
+        <!-- Step 2: Entender Features -->
+        <div class="onboarding-step" id="step-2">
+            <div class="step-header">
+                <span class="step-counter">Passo 2 de 6</span>
+                <button onclick="closeOnboarding()" class="close-btn">✕</button>
+            </div>
+            <div class="step-content">
+                <div class="step-icon">⚡</div>
+                <h2>Por que InfiniteClaud?</h2>
+                <div class="features-list">
+                    <div class="feature-item">
+                        <span class="feature-icon">⚡</span>
+                        <div>
+                            <strong>50x Mais Rápido</strong>
+                            <p>Acesso direto ao DOM vs screenshots</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">🧠</span>
+                        <div>
+                            <strong>Model Router</strong>
+                            <p>Economiza 90% de tokens automaticamente</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">🔧</span>
+                        <div>
+                            <strong>20 Ferramentas MCP</strong>
+                            <p>Web, Filesystem, Native, System</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="step-actions">
+                <button class="btn-secondary" onclick="prevStep()">← Voltar</button>
+                <button class="btn-secondary" onclick="nextStep()">Próximo →</button>
+            </div>
+        </div>
+
+        <!-- Step 3: Configuração -->
+        <div class="onboarding-step" id="step-3">
+            <div class="step-header">
+                <span class="step-counter">Passo 3 de 6</span>
+                <button onclick="closeOnboarding()" class="close-btn">✕</button>
+            </div>
+            <div class="step-content">
+                <div class="step-icon">⚙️</div>
+                <h2>Configuração Inicial</h2>
+                <form class="onboarding-form" id="config-form">
+                    <div class="form-group">
+                        <label for="name">Nome do Projeto</label>
+                        <input type="text" id="name" placeholder="Ex: Meu Bot Automático" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" placeholder="seu@email.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="model">Modelo Padrão</label>
+                        <select id="model">
+                            <option value="haiku">Haiku (Rápido)</option>
+                            <option value="sonnet" selected>Sonnet (Balanceado)</option>
+                            <option value="opus">Opus (Poderoso)</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="step-actions">
+                <button class="btn-secondary" onclick="prevStep()">← Voltar</button>
+                <button class="btn-secondary" onclick="nextStep()">Próximo →</button>
+            </div>
+        </div>
+
+        <!-- Step 4: Tour Interativo -->
+        <div class="onboarding-step" id="step-4">
+            <div class="step-header">
+                <span class="step-counter">Passo 4 de 6</span>
+                <button onclick="closeOnboarding()" class="close-btn">✕</button>
+            </div>
+            <div class="step-content">
+                <div class="step-icon">👁️</div>
+                <h2>Tour pela Interface</h2>
+                <p>Clique em "Iniciar Tour" para destacar os elementos principais da plataforma.</p>
+                <div class="tour-highlights">
+                    <div class="tour-item">
+                        <span class="tour-num">1</span>
+                        <strong>Navbar:</strong> Navegação rápida
+                    </div>
+                    <div class="tour-item">
+                        <span class="tour-num">2</span>
+                        <strong>Hero:</strong> Seção principal com widgets
+                    </div>
+                    <div class="tour-item">
+                        <span class="tour-num">3</span>
+                        <strong>Métricas:</strong> Números que impressionam
+                    </div>
+                </div>
+            </div>
+            <div class="step-actions">
+                <button class="btn-secondary" onclick="prevStep()">← Voltar</button>
+                <button class="btn-primary" onclick="startTour()">👁️ Iniciar Tour</button>
+                <button class="btn-secondary" onclick="nextStep()">Próximo →</button>
+            </div>
+        </div>
+
+        <!-- Step 5: Próximos Passos -->
+        <div class="onboarding-step" id="step-5">
+            <div class="step-header">
+                <span class="step-counter">Passo 5 de 6</span>
+                <button onclick="closeOnboarding()" class="close-btn">✕</button>
+            </div>
+            <div class="step-content">
+                <div class="step-icon">🔗</div>
+                <h2>Próximos Passos</h2>
+                <p>Explore a documentação e comunidade:</p>
+                <div class="links-grid">
+                    <a href="https://github.com/silvakazu-cell/infiniteclaud" target="_blank" class="link-card">
+                        <span class="link-icon">📦</span>
+                        <strong>GitHub</strong>
+                        <p>Código-fonte e issues</p>
+                    </a>
+                    <a href="#" class="link-card">
+                        <span class="link-icon">📚</span>
+                        <strong>Documentação</strong>
+                        <p>Guia completo de uso</p>
+                    </a>
+                    <a href="#" class="link-card">
+                        <span class="link-icon">💬</span>
+                        <strong>Comunidade</strong>
+                        <p>Suporte e discussões</p>
+                    </a>
+                </div>
+            </div>
+            <div class="step-actions">
+                <button class="btn-secondary" onclick="prevStep()">← Voltar</button>
+                <button class="btn-secondary" onclick="nextStep()">Próximo →</button>
+            </div>
+        </div>
+
+        <!-- Step 6: Conclusão -->
+        <div class="onboarding-step" id="step-6">
+            <div class="step-header">
+                <span class="step-counter">Passo 6 de 6</span>
+                <button onclick="closeOnboarding()" class="close-btn">✕</button>
+            </div>
+            <div class="step-content">
+                <div class="step-icon">✨</div>
+                <h2>Pronto para começar!</h2>
+                <p id="summary-text">Você configurou tudo corretamente. Agora é hora de explorar o poder do InfiniteClaud.</p>
+                <div class="success-animation">
+                    <div class="checkmark">✓</div>
+                </div>
+            </div>
+            <div class="step-actions">
+                <button class="btn-secondary" onclick="prevStep()">← Voltar</button>
+                <button class="btn-primary" onclick="finishOnboarding()">Finalizar →</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Tour Highlight Overlay -->
+<div id="tour-overlay" class="tour-overlay hidden">
+    <div class="tour-spotlight"></div>
+    <div class="tour-tooltip">
+        <span id="tour-text"></span>
+        <button onclick="nextTourStep()" class="btn-mini">Próximo →</button>
+    </div>
+</div>
+
 <script>
     function setDevice(device) {
         const viewport = document.getElementById('viewport');
