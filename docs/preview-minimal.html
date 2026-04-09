@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InfiniteClaud — Automation Agent</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #FAFAF8;
+            color: #1A1A1A;
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* ===== TIPOGRAFIA ===== */
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            font-weight: 400;
+            letter-spacing: -1px;
+            line-height: 1.1;
+        }
+
+        h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 400;
+            letter-spacing: -0.5px;
+            margin-bottom: 24px;
+        }
+
+        p {
+            font-size: 1rem;
+            color: #666;
+            font-weight: 300;
+        }
+
+        /* ===== ANIMAÇÕES ===== */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .slide-up {
+            animation: slideUp 0.8s ease-out;
+        }
+
+        /* ===== NAVBAR ===== */
+        nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 32px 24px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: rgba(250, 250, 248, 0.95);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid #EFEFEA;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 48px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #666;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #000;
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-top: 80px;
+            padding-bottom: 80px;
+            text-align: center;
+        }
+
+        .hero-content h1 {
+            margin-bottom: 24px;
+            animation: slideUp 0.8s ease-out 0.1s backwards;
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: #999;
+            font-weight: 300;
+            margin-bottom: 48px;
+            animation: slideUp 0.8s ease-out 0.2s backwards;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 16px 48px;
+            background: #000;
+            color: #fff;
+            text-decoration: none;
+            border: 1px solid #000;
+            border-radius: 2px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            animation: slideUp 0.8s ease-out 0.3s backwards;
+        }
+
+        .cta-button:hover {
+            background: #fff;
+            color: #000;
+        }
+
+        /* ===== FEATURES GRID ===== */
+        .features-section {
+            padding: 120px 24px;
+            background: #fff;
+            border-top: 1px solid #EFEFEA;
+        }
+
+        .features-header {
+            text-align: center;
+            margin-bottom: 80px;
+            animation: slideUp 0.8s ease-out;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 60px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            padding: 40px 0;
+            border-top: 1px solid #EFEFEA;
+            transition: all 0.3s ease;
+            animation: slideUp 0.8s ease-out backwards;
+        }
+
+        .feature-card:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .feature-card:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .feature-card:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            border-top-color: #1A1A1A;
+        }
+
+        .feature-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 400;
+            margin-bottom: 12px;
+            color: #1A1A1A;
+        }
+
+        .feature-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            font-weight: 400;
+            margin-bottom: 16px;
+            color: #1A1A1A;
+        }
+
+        .feature-card p {
+            font-size: 0.95rem;
+            line-height: 1.8;
+        }
+
+        /* ===== STATS ===== */
+        .stats-section {
+            padding: 120px 24px;
+            background: #FAFAF8;
+            border-top: 1px solid #EFEFEA;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .stat {
+            text-align: center;
+            animation: slideUp 0.8s ease-out backwards;
+        }
+
+        .stat:nth-child(1) { animation-delay: 0s; }
+        .stat:nth-child(2) { animation-delay: 0.1s; }
+        .stat:nth-child(3) { animation-delay: 0.2s; }
+        .stat:nth-child(4) { animation-delay: 0.3s; }
+
+        .stat-value {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            font-weight: 400;
+            margin-bottom: 8px;
+            color: #1A1A1A;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: #999;
+            font-weight: 400;
+        }
+
+        /* ===== CTA SECTION ===== */
+        .cta-section {
+            padding: 120px 24px;
+            text-align: center;
+            border-top: 1px solid #EFEFEA;
+        }
+
+        .cta-section h2 {
+            animation: slideUp 0.8s ease-out;
+        }
+
+        .cta-section p {
+            font-size: 1.1rem;
+            margin-bottom: 48px;
+            animation: slideUp 0.8s ease-out 0.1s backwards;
+        }
+
+        .cta-button-large {
+            display: inline-block;
+            padding: 20px 60px;
+            background: #000;
+            color: #fff;
+            text-decoration: none;
+            border: 1px solid #000;
+            border-radius: 2px;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            animation: slideUp 0.8s ease-out 0.2s backwards;
+        }
+
+        .cta-button-large:hover {
+            background: #fff;
+            color: #000;
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            padding: 60px 24px;
+            border-top: 1px solid #EFEFEA;
+            text-align: center;
+            background: #fff;
+            animation: fadeIn 0.8s ease-out 0.3s backwards;
+        }
+
+        footer p {
+            font-size: 0.85rem;
+            color: #999;
+            margin-bottom: 24px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 48px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            text-decoration: none;
+            color: #666;
+            font-size: 0.85rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: #000;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+            }
+
+            nav {
+                padding: 20px 16px;
+            }
+
+            .nav-links {
+                gap: 24px;
+            }
+
+            .hero {
+                padding-top: 100px;
+                padding-bottom: 60px;
+            }
+
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 30px;
+            }
+
+            .feature-card {
+                border-top: none;
+                border-bottom: 1px solid #EFEFEA;
+                padding: 30px 0;
+            }
+
+            .footer-links {
+                gap: 24px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            nav {
+                padding: 16px 12px;
+            }
+
+            .nav-links {
+                gap: 16px;
+                font-size: 0.85rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cta-button,
+            .cta-button-large {
+                padding: 14px 32px;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Scroll reveal effect */
+        .reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.8s ease-out;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav>
+        <div class="logo">∞ InfiniteClaud</div>
+        <ul class="nav-links">
+            <li><a href="#features">Features</a></li>
+            <li><a href="#stats">Stats</a></li>
+            <li><a href="#cta">Começar</a></li>
+        </ul>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Automação Infinita</h1>
+            <p class="hero-subtitle">O agente autônomo que entende a máquina. Precisão cirúrgica em cada ação.</p>
+            <a href="#cta" class="cta-button">Instalar Agora</a>
+        </div>
+    </section>
+
+    <!-- FEATURES SECTION -->
+    <section class="features-section" id="features">
+        <div class="container">
+            <div class="features-header">
+                <h2>Porque InfiniteClaud</h2>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-number">50x</div>
+                    <h3>Mais Rápido</h3>
+                    <p>Acesso direto ao DOM sem screenshots. Resposta em millisegundos ao invés de segundos.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-number">90%</div>
+                    <h3>Menos Tokens</h3>
+                    <p>Model Router inteligente. Usa Haiku, Sonnet ou Opus automaticamente. Economize em larga escala.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-number">20</div>
+                    <h3>Ferramentas MCP</h3>
+                    <p>Web, Filesystem, Native, System. Tudo que você precisa para automatizar qualquer coisa.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- STATS SECTION -->
+    <section class="stats-section" id="stats">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat">
+                    <div class="stat-value">50x</div>
+                    <div class="stat-label">Mais rápido que screenshots</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">90%</div>
+                    <div class="stat-label">Economia de tokens</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">20</div>
+                    <div class="stat-label">Ferramentas nativas</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">&lt;100ms</div>
+                    <div class="stat-label">Latência por ação</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA SECTION -->
+    <section class="cta-section" id="cta">
+        <div class="container">
+            <h2>Pronto para começar?</h2>
+            <p>Instale o InfiniteClaud agora e transforme a forma como você automatiza tarefas com Claude.</p>
+            <a href="https://github.com/silvakazu-cell/infiniteclaud" target="_blank" class="cta-button-large">
+                Acessar GitHub →
+            </a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>InfiniteClaud — Automação autônoma para Claude Code</p>
+        <div class="footer-links">
+            <a href="https://github.com/silvakazu-cell/infiniteclaud" target="_blank">GitHub</a>
+            <a href="#">Documentação</a>
+            <a href="#">Comunidade</a>
+            <a href="#">License MIT</a>
+        </div>
+        <p style="margin-top: 24px; font-size: 0.8rem;">© 2026 Douglas Kazunari</p>
+    </footer>
+
+    <script>
+        // Smooth scroll + reveal animation
+        const revealElements = document.querySelectorAll('.reveal');
+
+        const revealOnScroll = () => {
+            revealElements.forEach(el => {
+                const rect = el.getBoundingClientRect();
+                if (rect.top < window.innerHeight - 100) {
+                    el.classList.add('visible');
+                }
+            });
+        };
+
+        window.addEventListener('scroll', revealOnScroll);
+        revealOnScroll();
+
+        // Navbar scroll effect
+        let lastScroll = 0;
+        const navbar = document.querySelector('nav');
+
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset;
+            if (currentScroll > 50) {
+                navbar.style.background = 'rgba(250, 250, 248, 0.98)';
+                navbar.style.boxShadow = '0 1px 0 rgba(0, 0, 0, 0.05)';
+            } else {
+                navbar.style.background = 'rgba(250, 250, 248, 0.95)';
+                navbar.style.boxShadow = 'none';
+            }
+            lastScroll = currentScroll;
+        });
+    </script>
+
+</body>
+</html>
