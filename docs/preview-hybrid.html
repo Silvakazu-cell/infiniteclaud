@@ -1207,6 +1207,166 @@
 </div>
 
 <script>
+    let currentStep = 1;
+    let tourActive = false;
+    let tourStep = 0;
+    const totalSteps = 6;
+
+    // Onboarding Control
+    function startOnboarding() {
+        document.getElementById('onboarding-overlay').classList.add('active');
+        currentStep = 1;
+        showStep(1);
+    }
+
+    function closeOnboarding() {
+        document.getElementById('onboarding-overlay').classList.remove('active');
+        if (tourActive) {
+            endTour();
+        }
+    }
+
+    function nextStep() {
+        if (currentStep < totalSteps) {
+            currentStep++;
+            showStep(currentStep);
+        }
+    }
+
+    function prevStep() {
+        if (currentStep > 1) {
+            currentStep--;
+            showStep(currentStep);
+        }
+    }
+
+    function showStep(step) {
+        // Hide all steps
+        document.querySelectorAll('.onboarding-step').forEach(el => {
+            el.classList.remove('active');
+        });
+
+        // Show current step
+        document.getElementById(`step-${step}`).classList.add('active');
+
+        // Update buttons state
+        const prevBtn = document.querySelector('.step-actions button:nth-child(1)');
+        const nextBtn = document.querySelector('.step-actions button:nth-child(2)');
+
+        if (prevBtn && step === 1) prevBtn.style.display = 'none';
+    }
+
+    function finishOnboarding() {
+        const name = document.getElementById('name').value || 'Usuário';
+        const email = document.getElementById('email').value || 'seu@email.com';
+        const model = document.getElementById('model').value || 'sonnet';
+
+        // Show summary
+        document.getElementById('summary-text').innerHTML =
+            `<strong>${name}</strong>, você configurou o InfiniteClaud com sucesso!<br><br>` +
+            `Email: ${email}<br>` +
+            `Modelo: ${model.charAt(0).toUpperCase() + model.slice(1)}<br><br>` +
+            `Agora acesse a documentação para começar a automatizar!`;
+
+        // Save to localStorage
+        localStorage.setItem('infiniteclaud-config', JSON.stringify({
+            name, email, model, date: new Date().toISOString()
+        }));
+
+        // Close after 2 seconds
+        setTimeout(() => {
+            closeOnboarding();
+        }, 2000);
+    }
+
+    // Tour System
+    const tourPoints = [
+        {
+            selector: '.navbar',
+            title: '📍 Navbar',
+            description: 'Navegação principal com links para Início, Números e Recursos'
+        },
+        {
+            selector: '.hero-content',
+            title: '📍 Hero Section',
+            description: 'Apresentação principal com widgets de features animados'
+        },
+        {
+            selector: '.widgets',
+            title: '📍 Feature Widgets',
+            description: '4 cards animados mostrando os principais benefícios do InfiniteClaud'
+        },
+        {
+            selector: '#metrics',
+            title: '📍 Seção de Métricas',
+            description: '5 números que demonstram o poder da plataforma'
+        }
+    ];
+
+    function startTour() {
+        tourActive = true;
+        tourStep = 0;
+        document.getElementById('tour-overlay').classList.remove('hidden');
+        showTourStep(0);
+    }
+
+    function showTourStep(index) {
+        if (index >= tourPoints.length) {
+            endTour();
+            nextStep();
+            return;
+        }
+
+        const point = tourPoints[index];
+        const element = document.querySelector(point.selector);
+
+        if (!element) {
+            tourStep++;
+            showTourStep(tourStep);
+            return;
+        }
+
+        const rect = element.getBoundingClientRect();
+        const spotlight = document.querySelector('.tour-spotlight');
+        const tooltip = document.querySelector('.tour-tooltip');
+
+        // Position spotlight
+        spotlight.style.left = (rect.left - 8) + 'px';
+        spotlight.style.top = (rect.top - 8) + 'px';
+        spotlight.style.width = (rect.width + 16) + 'px';
+        spotlight.style.height = (rect.height + 16) + 'px';
+
+        // Position tooltip
+        let tooltipX = rect.left + rect.width / 2 - 150;
+        let tooltipY = rect.bottom + 20;
+
+        if (tooltipY + 150 > window.innerHeight) {
+            tooltipY = rect.top - 160;
+        }
+
+        tooltip.style.left = Math.max(10, Math.min(tooltipX, window.innerWidth - 310)) + 'px';
+        tooltip.style.top = tooltipY + 'px';
+
+        document.getElementById('tour-text').textContent =
+            `${point.title}: ${point.description}`;
+    }
+
+    function nextTourStep() {
+        tourStep++;
+        if (tourStep < tourPoints.length) {
+            showTourStep(tourStep);
+        } else {
+            endTour();
+            nextStep();
+        }
+    }
+
+    function endTour() {
+        tourActive = false;
+        document.getElementById('tour-overlay').classList.add('hidden');
+    }
+
+    // Device Selector
     function setDevice(device) {
         const viewport = document.getElementById('viewport');
         const buttons = document.querySelectorAll('.device-btn');
@@ -1223,6 +1383,30 @@
         // Mark button as active
         event.target.classList.add('active');
     }
+
+    // Load saved config on page load
+    window.addEventListener('load', () => {
+        const saved = localStorage.getItem('infiniteclaud-config');
+        if (saved) {
+            try {
+                const config = JSON.parse(saved);
+                document.getElementById('name').value = config.name;
+                document.getElementById('email').value = config.email;
+                document.getElementById('model').value = config.model;
+            } catch (e) {
+                console.log('Could not load saved config');
+            }
+        }
+    });
+
+    // Keyboard shortcuts
+    document.addEventListener('keydown', (e) => {
+        if (!document.getElementById('onboarding-overlay').classList.contains('active')) return;
+
+        if (e.key === 'Escape') closeOnboarding();
+        if (e.key === 'ArrowRight') nextStep();
+        if (e.key === 'ArrowLeft') prevStep();
+    });
 </script>
 
 </body>
