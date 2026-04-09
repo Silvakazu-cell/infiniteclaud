@@ -978,7 +978,7 @@ bash setup.sh</code></pre>
 </footer>
 
 <script>
-// Copy install command
+// Copy install command with enhanced feedback
 function copyInstall() {
     const text = 'claude plugin install --from github Silvakazu-cell/infiniteclaud';
     navigator.clipboard.writeText(text).then(function() {
@@ -1001,10 +1001,74 @@ document.querySelectorAll('.reveal').forEach(function(el) {
     observer.observe(el);
 });
 
+// Parallax effect on scroll
+window.addEventListener('scroll', function() {
+    var scrollY = window.scrollY;
+    var heroElements = document.querySelectorAll('.hero::before, .hero::after');
+    var bgElements = document.querySelectorAll('section::before, section::after');
+
+    bgElements.forEach(function(el) {
+        var speed = 0.5;
+        el.style.transform = 'translateY(' + (scrollY * speed) + 'px)';
+    });
+});
+
+// Smooth scroll behavior
+document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+    anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        var target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    });
+});
+
 // Close mobile menu on link click
 document.querySelectorAll('.navbar-links a').forEach(function(link) {
     link.addEventListener('click', function() {
         document.querySelector('.navbar-links').classList.remove('open');
+    });
+});
+
+// Add glow cursor effect
+document.addEventListener('mousemove', function(e) {
+    var x = e.clientX;
+    var y = e.clientY;
+
+    document.querySelectorAll('.metric-card, .tool-group, .iface-card, .mode-card').forEach(function(card) {
+        var rect = card.getBoundingClientRect();
+        var cardX = rect.left + rect.width / 2;
+        var cardY = rect.top + rect.height / 2;
+
+        var distance = Math.sqrt((x - cardX) ** 2 + (y - cardY) ** 2);
+        var maxDistance = 300;
+
+        if (distance < maxDistance) {
+            var opacity = 1 - (distance / maxDistance);
+            var glow = card.querySelector('::before');
+            if (glow) {
+                card.style.boxShadow = '0 0 ' + (40 * opacity) + 'px rgba(212,168,67,' + (0.3 * opacity) + ')';
+            }
+        }
+    });
+});
+
+// Fade navbar on scroll
+var navbar = document.querySelector('.navbar');
+window.addEventListener('scroll', function() {
+    if (window.scrollY > 100) {
+        navbar.style.backgroundColor = 'rgba(10,10,10,0.95)';
+    } else {
+        navbar.style.backgroundColor = 'linear-gradient(180deg, rgba(10,10,10,0.9), rgba(10,10,10,0.7))';
+    }
+});
+
+// FAQ toggle with animation
+document.querySelectorAll('.faq-q').forEach(function(question) {
+    question.addEventListener('click', function() {
+        var item = this.parentElement;
+        item.classList.toggle('open');
     });
 });
 </script>
