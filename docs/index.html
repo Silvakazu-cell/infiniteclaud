@@ -367,10 +367,25 @@
         /* INTERFACES */
         .interfaces-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
         .iface-card {
-            background: var(--card); border: 1px solid var(--border); border-radius: 14px;
-            padding: 36px 28px; text-align: center; transition: all 0.3s;
+            background: linear-gradient(135deg, rgba(26,26,26,0.6), rgba(26,26,26,0.3));
+            border: 1px solid rgba(212,168,67,0.15); border-radius: 14px;
+            padding: 36px 28px; text-align: center; transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative; overflow: hidden;
+            animation: slideInUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            backdrop-filter: blur(10px);
         }
-        .iface-card:hover { border-color: var(--gold); transform: translateY(-4px); box-shadow: 0 8px 32px rgba(212,168,67,0.1); }
+        .iface-card::before {
+            content: ''; position: absolute; inset: 0;
+            background: conic-gradient(from 0deg, rgba(212,168,67,0.1), rgba(6,182,212,0.1), rgba(212,168,67,0.1));
+            opacity: 0; animation: rotateBg 20s linear infinite;
+            transition: opacity 0.4s;
+        }
+        .iface-card:hover::before { opacity: 0.5; }
+        .iface-card:hover {
+            border-color: var(--gold);
+            transform: translateY(-8px);
+            animation: glowPulse 2s ease-in-out infinite;
+        }
         .iface-icon { font-size: 2.4rem; margin-bottom: 16px; }
         .iface-card h3 { font-size: 1.15rem; margin-bottom: 10px; color: var(--white); }
         .iface-card p { color: var(--gray); font-size: 0.9rem; }
