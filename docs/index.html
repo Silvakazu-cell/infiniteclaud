@@ -780,6 +780,14 @@
             hero.style.backgroundPosition = `0% ${scrollY * 0.5}px`;
         }
     });
+
+    // FAQ Toggle
+    document.querySelectorAll('.faq-q').forEach(function(question) {
+        question.addEventListener('click', function() {
+            const item = this.parentElement;
+            item.classList.toggle('open');
+        });
+    });
 </script>
 
 </body>
