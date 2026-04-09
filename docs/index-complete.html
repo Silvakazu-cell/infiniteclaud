@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InfiniteClaud — Plugin Oficial do Claude Marketplace</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #FAFAF8;
+            color: #1A1A1A;
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* ===== TIPOGRAFIA ===== */
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            font-weight: 400;
+            letter-spacing: -1px;
+            line-height: 1.1;
+        }
+
+        h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            font-weight: 400;
+            letter-spacing: -0.5px;
+            margin-bottom: 48px;
+        }
+
+        h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            font-weight: 400;
+        }
+
+        p {
+            font-size: 1rem;
+            color: #666;
+            font-weight: 300;
+            line-height: 1.8;
+        }
+
+        /* ===== ANIMAÇÕES ===== */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .slide-up {
+            animation: slideUp 0.8s ease-out;
+        }
+
+        /* ===== NAVBAR ===== */
+        nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 24px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(250, 250, 248, 0.95);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid #EFEFEA;
+            animation: slideDown 0.6s ease-out;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .certification-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: linear-gradient(135deg, #2563EB, #1E40AF);
+            color: white;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+            animation: slideUp 0.6s ease-out 0.1s backwards;
+        }
+
+        .cert-icon {
+            font-size: 0.9rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 48px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #666;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #000;
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-top: 80px;
+            padding-bottom: 80px;
+            text-align: center;
+        }
+
+        .hero-content h1 {
+            margin-bottom: 16px;
+            animation: slideUp 0.8s ease-out 0.1s backwards;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            padding: 8px 20px;
+            background: #EBF8FF;
+            border: 1px solid #BEE3F8;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: #2563EB;
+            margin-bottom: 24px;
+            font-weight: 500;
+            animation: slideUp 0.8s ease-out backwards;
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: #999;
+            font-weight: 300;
+            margin-bottom: 48px;
+            animation: slideUp 0.8s ease-out 0.2s backwards;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 16px 48px;
+            background: #000;
+            color: #fff;
+            text-decoration: none;
+            border: 1px solid #000;
+            border-radius: 2px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            animation: slideUp 0.8s ease-out 0.3s backwards;
+        }
+
+        .cta-button:hover {
+            background: #fff;
+            color: #000;
+        }
+
+        /* ===== SECTION ===== */
+        section {
+            padding: 80px 24px;
+            border-top: 1px solid #EFEFEA;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+            animation: slideUp 0.8s ease-out;
+        }
+
+        /* ===== DIFERENCIAIS SECTION ===== */
+        .diferenciais-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 48px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .diferencial-card {
+            padding: 40px 0;
+            border-top: 1px solid #EFEFEA;
+            transition: all 0.3s ease;
+            animation: slideUp 0.8s ease-out backwards;
+            text-align: left;
+        }
+
+        .diferencial-card:nth-child(1) { animation-delay: 0.1s; }
+        .diferencial-card:nth-child(2) { animation-delay: 0.2s; }
+        .diferencial-card:nth-child(3) { animation-delay: 0.3s; }
+        .diferencial-card:nth-child(4) { animation-delay: 0.4s; }
+        .diferencial-card:nth-child(5) { animation-delay: 0.5s; }
+        .diferencial-card:nth-child(6) { animation-delay: 0.6s; }
+
+        .diferencial-card:hover {
+            transform: translateY(-4px);
+            border-top-color: #000;
+        }
+
+        .diferencial-icon {
+            font-size: 2rem;
+            margin-bottom: 16px;
+            display: block;
+        }
+
+        .diferencial-card h3 {
+            margin-bottom: 12px;
+            color: #000;
+        }
+
+        .diferencial-card p {
+            font-size: 0.95rem;
+        }
+
+        /* ===== ENTREGÁVEIS SECTION ===== */
+        .entregaveis-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 60px;
+            max-width: 1200px;
+            margin: 0 auto;
+            align-items: start;
+        }
+
+        .entregaveis-list {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .entregavel-item {
+            display: flex;
+            gap: 20px;
+            padding: 24px;
+            background: #fff;
+            border: 1px solid #EFEFEA;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            animation: slideUp 0.8s ease-out backwards;
+        }
+
+        .entregavel-item:nth-child(1) { animation-delay: 0.1s; }
+        .entregavel-item:nth-child(2) { animation-delay: 0.2s; }
+        .entregavel-item:nth-child(3) { animation-delay: 0.3s; }
+        .entregavel-item:nth-child(4) { animation-delay: 0.4s; }
+        .entregavel-item:nth-child(5) { animation-delay: 0.5s; }
+
+        .entregavel-item:hover {
+            border-color: #000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            transform: translateY(-2px);
+        }
+
+        .entregavel-icon {
+            font-size: 1.8rem;
+            flex-shrink: 0;
+        }
+
+        .entregavel-content h4 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            font-weight: 400;
+            margin-bottom: 6px;
+            color: #000;
+        }
+
+        .entregavel-content p {
+            font-size: 0.9rem;
+            color: #999;
+            margin: 0;
+        }
+
+        .entregaveis-image {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #F0F4FF 0%, #F5EFFF 100%);
+            border-radius: 4px;
+            padding: 60px;
+            text-align: center;
+            color: #666;
+            font-size: 4rem;
+            animation: slideUp 0.8s ease-out 0.2s backwards;
+        }
+
+        /* ===== INSTALAÇÃO SECTION ===== */
+        .installation-steps {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .step {
+            position: relative;
+            text-align: center;
+            animation: slideUp 0.8s ease-out backwards;
+        }
+
+        .step:nth-child(1) { animation-delay: 0.1s; }
+        .step:nth-child(2) { animation-delay: 0.2s; }
+        .step:nth-child(3) { animation-delay: 0.3s; }
+        .step:nth-child(4) { animation-delay: 0.4s; }
+
+        .step-number {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 60px;
+            height: 60px;
+            background: #000;
+            color: #fff;
+            border-radius: 50%;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin: 0 auto 24px;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .step h3 {
+            margin-bottom: 12px;
+            color: #000;
+        }
+
+        .step p {
+            font-size: 0.95rem;
+        }
+
+        .step-connector {
+            position: absolute;
+            top: 30px;
+            left: -25%;
+            right: 75%;
+            height: 2px;
+            background: #EFEFEA;
+        }
+
+        .step:first-child .step-connector {
+            display: none;
+        }
+
+        /* ===== STATS ===== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .stat {
+            text-align: center;
+            animation: slideUp 0.8s ease-out backwards;
+        }
+
+        .stat:nth-child(1) { animation-delay: 0s; }
+        .stat:nth-child(2) { animation-delay: 0.1s; }
+        .stat:nth-child(3) { animation-delay: 0.2s; }
+        .stat:nth-child(4) { animation-delay: 0.3s; }
+
+        .stat-value {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 400;
+            margin-bottom: 8px;
+            color: #000;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #999;
+        }
+
+        /* ===== TECHS SECTION ===== */
+        .techs-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .tech-card {
+            padding: 30px;
+            background: #fff;
+            border: 1px solid #EFEFEA;
+            border-radius: 4px;
+            text-align: center;
+            transition: all 0.3s ease;
+            animation: slideUp 0.8s ease-out backwards;
+        }
+
+        .tech-card:nth-child(1) { animation-delay: 0.1s; }
+        .tech-card:nth-child(2) { animation-delay: 0.2s; }
+        .tech-card:nth-child(3) { animation-delay: 0.3s; }
+        .tech-card:nth-child(4) { animation-delay: 0.4s; }
+        .tech-card:nth-child(5) { animation-delay: 0.5s; }
+        .tech-card:nth-child(6) { animation-delay: 0.6s; }
+        .tech-card:nth-child(7) { animation-delay: 0.7s; }
+        .tech-card:nth-child(8) { animation-delay: 0.8s; }
+
+        .tech-card:hover {
+            border-color: #000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            transform: translateY(-4px);
+        }
+
+        .tech-icon {
+            font-size: 2.5rem;
+            margin-bottom: 12px;
+        }
+
+        .tech-card h4 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1rem;
+            font-weight: 400;
+            color: #000;
+        }
+
+        /* ===== CTA SECTION ===== */
+        .cta-final {
+            text-align: center;
+        }
+
+        .cta-final h2 {
+            animation: slideUp 0.8s ease-out;
+        }
+
+        .cta-final p {
+            font-size: 1.1rem;
+            margin-bottom: 48px;
+            animation: slideUp 0.8s ease-out 0.1s backwards;
+        }
+
+        .cta-button-large {
+            display: inline-block;
+            padding: 20px 60px;
+            background: #000;
+            color: #fff;
+            text-decoration: none;
+            border: 1px solid #000;
+            border-radius: 2px;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            animation: slideUp 0.8s ease-out 0.2s backwards;
+        }
+
+        .cta-button-large:hover {
+            background: #fff;
+            color: #000;
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            padding: 60px 24px;
+            border-top: 1px solid #EFEFEA;
+            text-align: center;
+            background: #fff;
+            animation: fadeIn 0.8s ease-out 0.3s backwards;
+        }
+
+        footer p {
+            font-size: 0.85rem;
+            color: #999;
+            margin-bottom: 24px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 48px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            text-decoration: none;
+            color: #666;
+            font-size: 0.85rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: #000;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+
+            h2 {
+                font-size: 1.6rem;
+            }
+
+            nav {
+                padding: 16px 12px;
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .nav-left {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .nav-links {
+                gap: 24px;
+                font-size: 0.85rem;
+            }
+
+            .diferenciais-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .entregaveis-container {
+                grid-template-columns: 1fr;
+            }
+
+            .installation-steps {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .techs-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .step-connector {
+                display: none;
+            }
+
+            section {
+                padding: 60px 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            h2 {
+                font-size: 1.3rem;
+            }
+
+            .certification-badge {
+                font-size: 0.7rem;
+                padding: 6px 12px;
+            }
+
+            .diferenciais-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .installation-steps {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .techs-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cta-button,
+            .cta-button-large {
+                padding: 14px 32px;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Scroll reveal */
+        .reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.8s ease-out;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav>
+        <div class="nav-left">
+            <div class="logo">∞ InfiniteClaud</div>
+            <div class="certification-badge">
+                <span class="cert-icon">✓</span>
+                Plugin Oficial Anthropic
+            </div>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#diferenciais">Diferenciais</a></li>
+            <li><a href="#entregaveis">Entregáveis</a></li>
+            <li><a href="#instalacao">Instalação</a></li>
+            <li><a href="#cta">Começar</a></li>
+        </ul>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">
+                ✓ Plugin Certificado pelo Claude Marketplace
+            </div>
+            <h1>Automação Infinita</h1>
+            <p class="hero-subtitle">O agente autônomo oficial que entende a máquina. Precisão cirúrgica em cada ação com 50x mais velocidade e 90% de economia de tokens.</p>
+            <a href="#cta" class="cta-button">Instalar Agora →</a>
+        </div>
+    </section>
+
+    <!-- DIFERENCIAIS SECTION -->
+    <section id="diferenciais">
+        <div class="container">
+            <div class="section-header">
+                <h2>Diferenciais de Mercado</h2>
+                <p>O que torna InfiniteClaud único</p>
+            </div>
+
+            <div class="diferenciais-grid">
+                <div class="diferencial-card">
+                    <span class="diferencial-icon">⚡</span>
+                    <h3>50x Mais Rápido</h3>
+                    <p>Acesso direto ao DOM sem screenshots. Respostas em millisegundos comparado a segundos em outros agentes.</p>
+                </div>
+
+                <div class="diferencial-card">
+                    <span class="diferencial-icon">🧠</span>
+                    <h3>Model Router Inteligente</h3>
+                    <p>Roteia automaticamente entre Haiku, Sonnet e Opus. Usa o modelo perfeito para cada tarefa. Economiza 90% de tokens.</p>
+                </div>
+
+                <div class="diferencial-card">
+                    <span class="diferencial-icon">🔧</span>
+                    <h3>20 Ferramentas MCP Nativas</h3>
+                    <p>Web, Filesystem, Native macOS, AppleScript, Shell. Tudo integrado sem dependências externas.</p>
+                </div>
+
+                <div class="diferencial-card">
+                    <span class="diferencial-icon">📡</span>
+                    <h3>3 Interfaces de Acesso</h3>
+                    <p>CLI, Dashboard Web, e Telegram Bot. Automatize de qualquer lugar, em qualquer dispositivo.</p>
+                </div>
+
+                <div class="diferencial-card">
+                    <span class="diferencial-icon">🔐</span>
+                    <h3>Segurança de Nível Enterprise</h3>
+                    <p>Certificação oficial do Claude Marketplace. Integração com Anthropic. Logs auditáveis e conformidade garantida.</p>
+                </div>
+
+                <div class="diferencial-card">
+                    <span class="diferencial-icon">🚀</span>
+                    <h3>Orquestração Automática</h3>
+                    <p>Executa fluxos complexos sem intervenção. Aprende com cada execução e otimiza processos automaticamente.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ENTREGÁVEIS SECTION -->
+    <section id="entregaveis">
+        <div class="container">
+            <div class="section-header">
+                <h2>O Que Você Recebe</h2>
+                <p>Tudo necessário para automatizar seus fluxos de trabalho</p>
+            </div>
+
+            <div class="entregaveis-container">
+                <div class="entregaveis-list">
+                    <div class="entregavel-item">
+                        <span class="entregavel-icon">📦</span>
+                        <div class="entregavel-content">
+                            <h4>MCP Server Completo</h4>
+                            <p>20 ferramentas prontas para uso com suporte a Web, FS, Native e System</p>
+                        </div>
+                    </div>
+
+                    <div class="entregavel-item">
+                        <span class="entregavel-icon">🤖</span>
+                        <div class="entregavel-content">
+                            <h4>Model Router Automático</h4>
+                            <p>Orquestrador que escolhe Haiku/Sonnet/Opus baseado na complexidade</p>
+                        </div>
+                    </div>
+
+                    <div class="entregavel-item">
+                        <span class="entregavel-icon">💻</span>
+                        <div class="entregavel-content">
+                            <h4>Dashboard Web Interativo</h4>
+                            <p>Interface completa para monitorar e controlar execuções em tempo real</p>
+                        </div>
+                    </div>
+
+                    <div class="entregavel-item">
+                        <span class="entregavel-icon">📱</span>
+                        <div class="entregavel-content">
+                            <h4>Telegram Bot Oficial</h4>
+                            <p>Automatize de qualquer lugar usando Telegram como interface</p>
+                        </div>
+                    </div>
+
+                    <div class="entregavel-item">
+                        <span class="entregavel-icon">📚</span>
+                        <div class="entregavel-content">
+                            <h4>Documentação Completa + SDK</h4>
+                            <p>Guias, exemplos, API docs e SDK em Python/JavaScript</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="entregaveis-image">
+                    📦
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- STATS SECTION -->
+    <section>
+        <div class="container">
+            <div class="section-header">
+                <h2>Números que Impressionam</h2>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat">
+                    <div class="stat-value">50x</div>
+                    <div class="stat-label">Mais rápido que screenshots</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">90%</div>
+                    <div class="stat-label">Economia de tokens</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">20</div>
+                    <div class="stat-label">Ferramentas MCP nativas</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">&lt;100ms</div>
+                    <div class="stat-label">Latência por ação</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TECNOLOGIAS SECTION -->
+    <section>
+        <div class="container">
+            <div class="section-header">
+                <h2>Tecnologias Incluídas</h2>
+                <p>Tudo que você precisa, integrado</p>
+            </div>
+
+            <div class="techs-grid">
+                <div class="tech-card">
+                    <div class="tech-icon">🐍</div>
+                    <h4>Python 3.11+</h4>
+                </div>
+                <div class="tech-card">
+                    <div class="tech-icon">🔌</div>
+                    <h4>MCP Protocol</h4>
+                </div>
+                <div class="tech-card">
+                    <div class="tech-icon">⚙️</div>
+                    <h4>Anthropic SDK</h4>
+                </div>
+                <div class="tech-card">
+                    <div class="tech-icon">🌐</div>
+                    <h4>FastAPI</h4>
+                </div>
+                <div class="tech-card">
+                    <div class="tech-icon">🔐</div>
+                    <h4>GitHub OAuth</h4>
+                </div>
+                <div class="tech-card">
+                    <div class="tech-icon">📊</div>
+                    <h4>Prometheus</h4>
+                </div>
+                <div class="tech-card">
+                    <div class="tech-icon">🚀</div>
+                    <h4>Docker Ready</h4>
+                </div>
+                <div class="tech-card">
+                    <div class="tech-icon">🔄</div>
+                    <h4>Async/Await</h4>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- INSTALAÇÃO SECTION -->
+    <section id="instalacao">
+        <div class="container">
+            <div class="section-header">
+                <h2>Como Instalar</h2>
+                <p>Pronto em 4 passos simples</p>
+            </div>
+
+            <div class="installation-steps">
+                <div class="step">
+                    <div class="step-connector"></div>
+                    <div class="step-number">1</div>
+                    <h3>Clone o Repositório</h3>
+                    <p>git clone o projeto oficial do GitHub e entre na pasta</p>
+                </div>
+
+                <div class="step">
+                    <div class="step-connector"></div>
+                    <div class="step-number">2</div>
+                    <h3>Configure as Chaves</h3>
+                    <p>Adicione suas credenciais Anthropic no arquivo .env</p>
+                </div>
+
+                <div class="step">
+                    <div class="step-connector"></div>
+                    <div class="step-number">3</div>
+                    <h3>Instale Dependências</h3>
+                    <p>pip install -r requirements.txt e configure o MCP</p>
+                </div>
+
+                <div class="step">
+                    <div class="step-connector"></div>
+                    <div class="step-number">4</div>
+                    <h3>Inicie o Servidor</h3>
+                    <p>python3 server.py e acesse o Dashboard em localhost:8000</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA SECTION -->
+    <section id="cta" class="cta-final">
+        <div class="container">
+            <h2>Transforme Sua Automação Hoje</h2>
+            <p>Ingresse ao Claude Marketplace oficial e ganhe acesso a 50x mais velocidade, 90% de economia de tokens e orquestração automática.</p>
+            <a href="https://github.com/silvakazu-cell/infiniteclaud" target="_blank" class="cta-button-large">
+                Acessar GitHub →
+            </a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>InfiniteClaud — Plugin Oficial do Claude Marketplace</p>
+        <div class="footer-links">
+            <a href="https://github.com/silvakazu-cell/infiniteclaud" target="_blank">GitHub</a>
+            <a href="#">Documentação</a>
+            <a href="#">Comunidade</a>
+            <a href="#">Relatórios de Bug</a>
+            <a href="#">License MIT</a>
+        </div>
+        <p style="margin-top: 24px; font-size: 0.8rem;">© 2026 Douglas Kazunari • Plugin Certificado Anthropic</p>
+    </footer>
+
+    <script>
+        // Scroll reveal
+        const revealElements = document.querySelectorAll('.reveal');
+
+        const revealOnScroll = () => {
+            revealElements.forEach(el => {
+                const rect = el.getBoundingClientRect();
+                if (rect.top < window.innerHeight - 100) {
+                    el.classList.add('visible');
+                }
+            });
+        };
+
+        window.addEventListener('scroll', revealOnScroll);
+        revealOnScroll();
+
+        // Navbar scroll effect
+        const navbar = document.querySelector('nav');
+
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset;
+            if (currentScroll > 50) {
+                navbar.style.background = 'rgba(250, 250, 248, 0.98)';
+                navbar.style.boxShadow = '0 1px 0 rgba(0, 0, 0, 0.05)';
+            } else {
+                navbar.style.background = 'rgba(250, 250, 248, 0.95)';
+                navbar.style.boxShadow = 'none';
+            }
+        });
+
+        // Smooth scroll for nav links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
