@@ -8,14 +8,20 @@ from pathlib import Path
 # Adicionar o diretório do automation ao path
 sys.path.insert(0, os.path.expanduser("~/.claude/automation"))
 
+import platform
+
 from tools.web import (web_navigate, web_click, web_type, web_extract,
                         web_screenshot, web_wait, web_scroll, web_eval)
 from tools.fs import fs_read, fs_write, fs_list, fs_move, fs_delete
-from tools.native import (mouse_click, mouse_move, keyboard_type,
-                           keyboard_hotkey, screen_screenshot)
-from tools.apple import applescript_run
 from tools.shell import shell_run
 from state import load_config
+
+_IS_MACOS = platform.system() == "Darwin"
+
+if _IS_MACOS:
+    from tools.native import (mouse_click, mouse_move, keyboard_type,
+                               keyboard_hotkey, screen_screenshot)
+    from tools.apple import applescript_run
 
 CONFIG_PATH = os.path.expanduser("~/.claude/automation/config.json")
 LOG_PATH = os.path.expanduser("~/.claude/route-log.jsonl")
