@@ -24,11 +24,17 @@ from telegram.ext import (
 from telegram.ext import CallbackQueryHandler
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 
+import platform
+
 from tools.fs import fs_read, fs_write, fs_list
 from tools.shell import shell_run
-from tools.apple import applescript_run
-from tools.native import screen_screenshot
 from state import load_config
+
+_IS_MACOS = platform.system() == "Darwin"
+
+if _IS_MACOS:
+    from tools.apple import applescript_run
+    from tools.native import screen_screenshot
 from dashboard.api.assistant import parse_natural_language
 from dashboard.api.tasks import TOOLS_MAP
 
