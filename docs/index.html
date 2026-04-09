@@ -167,14 +167,21 @@
         .navbar-toggle { display: none; background: none; border: none; color: var(--gold); font-size: 1.5rem; cursor: pointer; }
 
         /* Section base */
-        section { padding: 100px 0; }
+        section { padding: 100px 0; position: relative; }
         .section-title {
             font-size: 2.4rem; font-weight: 900; text-align: center; margin-bottom: 16px;
-            background: linear-gradient(135deg, var(--gold-light), var(--gold), var(--gold-dark));
+            background: linear-gradient(135deg, var(--gold-light), var(--gold), #FFD700, var(--gold-dark));
+            background-size: 300% 300%;
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
             background-clip: text;
+            filter: drop-shadow(0 0 20px rgba(212, 168, 67, 0.3));
+            animation: slideInDown 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
-        .section-subtitle { text-align: center; color: var(--gray); font-size: 1.05rem; max-width: 600px; margin: 0 auto 56px; }
+        .section-subtitle {
+            text-align: center; color: var(--gray); font-size: 1.05rem;
+            max-width: 600px; margin: 0 auto 56px;
+            animation: slideInUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s backwards;
+        }
 
         /* Animate on scroll */
         .reveal {
