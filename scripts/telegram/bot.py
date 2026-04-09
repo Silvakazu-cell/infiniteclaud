@@ -233,6 +233,9 @@ async def mode(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def run_applescript(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not is_authorized(update):
         return
+    if not _IS_MACOS:
+        await update.message.reply_text("❌ AppleScript disponível apenas no macOS.")
+        return
     if not context.args:
         await update.message.reply_text("Uso: /applescript <script>")
         return
