@@ -42,14 +42,18 @@ TOOLS_MAP = {
     "fs_list": fs_list,
     "fs_move": fs_move,
     "fs_delete": fs_delete,
-    "mouse_click": mouse_click,
-    "mouse_move": mouse_move,
-    "keyboard_type": keyboard_type,
-    "keyboard_hotkey": keyboard_hotkey,
-    "screen_screenshot": screen_screenshot,
-    "applescript_run": applescript_run,
     "shell_run": shell_run,
 }
+
+if _IS_MACOS:
+    TOOLS_MAP.update({
+        "mouse_click": mouse_click,
+        "mouse_move": mouse_move,
+        "keyboard_type": keyboard_type,
+        "keyboard_hotkey": keyboard_hotkey,
+        "screen_screenshot": screen_screenshot,
+        "applescript_run": applescript_run,
+    })
 
 # Descrições das ferramentas por grupo
 TOOLS_INFO = {
