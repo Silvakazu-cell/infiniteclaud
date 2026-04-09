@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InfiniteClaud — O agente autonomo que entende a maquina</title>
+    <meta name="description" content="20 MCP tools, intelligent model router, web dashboard & Telegram bot. 50x faster than screenshot-based, 90% fewer tokens.">
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:title" content="InfiniteClaud - Published on Claude Marketplace">
+    <meta property="og:description" content="Autonomous automation agent for Claude Code. 50x faster than Computer Use. 90% fewer tokens. Official Anthropic Plugin.">
+    <meta property="og:image" content="https://infiniteclaud.com/branding/infiniteclaud-share-banner.png">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://infiniteclaud.com">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://infiniteclaud.com/branding/infiniteclaud-share-banner.png">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="branding/favicon.ico">
+    <link rel="icon" type="image/png" sizes="256x256" href="branding/favicon-256x256.png">
+    <link rel="icon" type="image/png" sizes="128x128" href="branding/favicon-128x128.png">
+    <link rel="icon" type="image/png" sizes="64x64" href="branding/favicon-64x64.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="branding/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="branding/favicon-16x16.png">
+    <link rel="apple-touch-icon" href="branding/favicon-256x256.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #D4A843;
+            --gold-light: #F2D275;
+            --gold-dark: #A07C2A;
+            --bg: #0A0A0A;
+            --card: #1A1A1A;
+            --border: #2A2A2A;
+            --white: #F5F0E8;
+            --gray: #888880;
+            --red: #E94560;
+            --green: #4ECCA3;
+            --blue: #4FC3F7;
+            --purple: #A855F7;
+            --cyan: #06B6D4;
+        }
+
+        @keyframes glowPulse {
+            0%, 100% { box-shadow: 0 0 20px rgba(212, 168, 67, 0.3), 0 0 40px rgba(212, 168, 67, 0.1); }
+            50% { box-shadow: 0 0 30px rgba(212, 168, 67, 0.6), 0 0 60px rgba(212, 168, 67, 0.2); }
+        }
+
+        @keyframes glowPulseCyan {
+            0%, 100% { box-shadow: 0 0 20px rgba(6, 182, 212, 0.3), 0 0 40px rgba(6, 182, 212, 0.1); }
+            50% { box-shadow: 0 0 30px rgba(6, 182, 212, 0.6), 0 0 60px rgba(6, 182, 212, 0.2); }
+        }
+
+        @keyframes glowPulsePurple {
+            0%, 100% { box-shadow: 0 0 20px rgba(168, 85, 247, 0.3), 0 0 40px rgba(168, 85, 247, 0.1); }
+            50% { box-shadow: 0 0 30px rgba(168, 85, 247, 0.6), 0 0 60px rgba(168, 85, 247, 0.2); }
+        }
+
+        @keyframes slideInDown {
+            from { opacity: 0; transform: translateY(-40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-60px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(60px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+        }
+
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -1000px 0; }
+            100% { background-position: 1000px 0; }
+        }
+
+        @keyframes rotateBg {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes orbitSmall {
+            0% { transform: rotate(0deg) translateX(100px) rotate(0deg); }
+            100% { transform: rotate(360deg) translateX(100px) rotate(-360deg); }
+        }
+
+        @keyframes orbitMedium {
+            0% { transform: rotate(0deg) translateX(150px) rotate(0deg); }
+            100% { transform: rotate(360deg) translateX(150px) rotate(-360deg); }
+        }
+
+        @keyframes orbitLarge {
+            0% { transform: rotate(0deg) translateX(200px) rotate(0deg); }
+            100% { transform: rotate(360deg) translateX(200px) rotate(-360deg); }
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg);
+            color: var(--white);
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Noise overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        h1, h2, h3, h4 { font-family: 'Playfair Display', serif; }
+        code, pre, .mono { font-family: 'JetBrains Mono', monospace; }
+
+        a { color: var(--gold); text-decoration: none; transition: color 0.3s; }
+        a:hover { color: var(--gold-light); }
+
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+        /* Navbar */
+        .navbar {
+            position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+            background: linear-gradient(180deg, rgba(10,10,10,0.9), rgba(10,10,10,0.7));
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(212,168,67,0.1);
+            padding: 14px 0;
+            animation: slideInDown 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .navbar::after {
+            content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(212,168,67,0.3), transparent);
+        }
+        .navbar .container { display: flex; align-items: center; justify-content: space-between; }
+        .navbar-brand {
+            font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1.2rem;
+            background: linear-gradient(135deg, var(--gold-light), var(--gold));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+            filter: drop-shadow(0 0 10px rgba(212,168,67,0.3));
+        }
+        .navbar-links { display: flex; gap: 24px; flex-wrap: wrap; }
+        .navbar-links a {
+            color: var(--gray); font-size: 0.85rem; font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+        }
+        .navbar-links a::after {
+            content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 1px;
+            background: linear-gradient(90deg, var(--gold), transparent);
+            transition: width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .navbar-links a:hover::after { width: 100%; }
+        .navbar-links a:hover { color: var(--gold); }
+        .navbar-toggle { display: none; background: none; border: none; color: var(--gold); font-size: 1.5rem; cursor: pointer; }
+
+        /* Section base */
+        section { padding: 100px 0; position: relative; }
+        .section-title {
+            font-size: 2.4rem; font-weight: 900; text-align: center; margin-bottom: 16px;
+            background: linear-gradient(135deg, var(--gold-light), var(--gold), #FFD700, var(--gold-dark));
+            background-size: 300% 300%;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 0 20px rgba(212, 168, 67, 0.3));
+            animation: slideInDown 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .section-subtitle {
+            text-align: center; color: var(--gray); font-size: 1.05rem;
+            max-width: 600px; margin: 0 auto 56px;
+            animation: slideInUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s backwards;
+        }
+
+        /* Animate on scroll */
+        .reveal {
+            opacity: 0; transform: translateY(30px);
+            transition: opacity 0.7s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+
+        /* Staggered animations */
+        .reveal:nth-child(1) { transition-delay: 0s; }
+        .reveal:nth-child(2) { transition-delay: 0.1s; }
+        .reveal:nth-child(3) { transition-delay: 0.2s; }
+        .reveal:nth-child(4) { transition-delay: 0.3s; }
+        .reveal:nth-child(5) { transition-delay: 0.4s; }
+        .reveal:nth-child(n+6) { transition-delay: 0.5s; }
+
+        /* HERO */
+        .hero {
+            min-height: 100vh; display: flex; align-items: center; justify-content: center;
+            text-align: center; padding-top: 80px; position: relative; overflow: hidden;
+        }
+
+        .hero::before {
+            content: ''; position: absolute; top: -40%; left: 50%; transform: translateX(-50%);
+            width: 800px; height: 800px; border-radius: 50%;
+            background: radial-gradient(circle, rgba(212,168,67,0.15) 0%, transparent 70%);
+            pointer-events: none;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .hero::after {
+            content: ''; position: absolute; bottom: -30%; right: -20%;
+            width: 600px; height: 600px; border-radius: 50%;
+            background: radial-gradient(circle, rgba(168, 85, 247, 0.1) 0%, transparent 70%);
+            pointer-events: none;
+            animation: floatSlow 8s ease-in-out infinite;
+        }
+        .hero-badge {
+            display: inline-block; padding: 6px 18px; border-radius: 100px;
+            border: 1px solid var(--border); color: var(--gray); font-size: 0.8rem;
+            margin-bottom: 28px; letter-spacing: 0.5px;
+        }
+        .hero h1 {
+            font-size: 4rem; font-weight: 900; margin-bottom: 20px; color: var(--white);
+            -webkit-text-fill-color: var(--white);
+            animation: slideInDown 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+            letter-spacing: -2px;
+        }
+        .hero h1 span {
+            background: linear-gradient(135deg, var(--gold-light), var(--gold), #FFD700);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+            filter: drop-shadow(0 0 20px rgba(212, 168, 67, 0.5));
+        }
+        .hero-tagline { font-size: 1.5rem; color: var(--gold); margin-bottom: 12px; font-weight: 500; font-family: 'Playfair Display', serif; font-style: italic; }
+        .hero-sub { font-size: 1.1rem; color: var(--gray); max-width: 640px; margin: 0 auto 40px; line-height: 1.7; }
+
+        .install-box {
+            display: inline-flex; align-items: center; gap: 12px;
+            background: linear-gradient(135deg, rgba(212,168,67,0.08), rgba(168,85,247,0.05));
+            border: 1px solid var(--border); border-radius: 10px;
+            padding: 14px 20px; cursor: pointer; transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); position: relative;
+            animation: slideInUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s backwards;
+            backdrop-filter: blur(10px);
+        }
+        .install-box::before {
+            content: ''; position: absolute; inset: 0; border-radius: 10px;
+            background: linear-gradient(90deg, transparent, rgba(212,168,67,0.1), transparent);
+            animation: shimmer 3s infinite;
+        }
+        .install-box:hover {
+            border-color: var(--gold);
+            box-shadow: 0 0 30px rgba(212,168,67,0.4), 0 0 60px rgba(168,85,247,0.2);
+            transform: translateY(-3px);
+        }
+        .install-box code { font-size: 0.9rem; color: var(--gold-light); }
+        .install-box .copy-icon { color: var(--gray); font-size: 1.1rem; transition: color 0.3s; }
+        .install-box:hover .copy-icon { color: var(--gold); }
+        .install-box .copied-tooltip {
+            position: absolute; top: -36px; left: 50%; transform: translateX(-50%);
+            background: var(--green); color: #000; padding: 4px 14px; border-radius: 6px;
+            font-size: 0.75rem; font-weight: 700; opacity: 0; transition: opacity 0.3s; pointer-events: none;
+        }
+        .install-box .copied-tooltip.show { opacity: 1; }
+
+        /* METRICS */
+        .metrics-grid {
+            display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px;
+        }
+        .metric-card {
+            background: linear-gradient(135deg, rgba(212,168,67,0.05), rgba(168,85,247,0.05));
+            border: 1px solid rgba(212,168,67,0.2); border-radius: 14px;
+            padding: 32px 16px; text-align: center; transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative; overflow: hidden;
+            animation: scaleIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .metric-card::before {
+            content: ''; position: absolute; inset: 0;
+            background: radial-gradient(circle at 50% 0%, rgba(212,168,67,0.2), transparent 70%);
+            opacity: 0; transition: opacity 0.4s;
+        }
+        .metric-card:hover::before { opacity: 1; }
+        .metric-card:hover {
+            border-color: var(--gold);
+            transform: translateY(-6px);
+            animation: glowPulse 2s ease-in-out infinite;
+        }
+        .metric-value {
+            font-family: 'Playfair Display', serif; font-size: 2.4rem; font-weight: 900;
+            background: linear-gradient(135deg, var(--gold-light), var(--gold));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+            filter: drop-shadow(0 0 10px rgba(212,168,67,0.3));
+        }
+        .metric-label { color: var(--gray); font-size: 0.85rem; margin-top: 8px; }
+
+        /* PROBLEM / SOLUTION */
+        .ps-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+        .ps-card {
+            background: linear-gradient(135deg, rgba(26,26,26,0.8), rgba(26,26,26,0.4));
+            border: 1px solid var(--border); border-radius: 14px;
+            padding: 40px; transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative; overflow: hidden; backdrop-filter: blur(10px);
+            animation: slideInUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .ps-card::before {
+            content: ''; position: absolute; top: 0; left: -100%;
+            width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            animation: shimmer 3s infinite;
+        }
+        .ps-card:hover {
+            border-color: var(--gold);
+            transform: translateY(-6px);
+        }
+        .ps-card.problem:hover { animation: glowPulse 2s ease-in-out infinite; }
+        .ps-card.solution:hover { animation: glowPulseCyan 2s ease-in-out infinite; }
+        .ps-card h3 { font-size: 1.5rem; margin-bottom: 20px; }
+        .ps-card.problem h3 { color: var(--red); }
+        .ps-card.solution h3 { color: var(--green); }
+        .ps-card ul { list-style: none; }
+        .ps-card li { padding: 8px 0; padding-left: 24px; position: relative; color: var(--gray); font-size: 0.95rem; }
+        .ps-card.problem li::before { content: '✕'; position: absolute; left: 0; color: var(--red); font-weight: 700; }
+        .ps-card.solution li::before { content: '✓'; position: absolute; left: 0; color: var(--green); font-weight: 700; }
+
+        /* STEPS */
+        .steps { display: flex; flex-direction: column; gap: 24px; max-width: 700px; margin: 0 auto; }
+        .step {
+            display: flex; align-items: flex-start; gap: 20px;
+            background: linear-gradient(135deg, rgba(212,168,67,0.05), rgba(6,182,212,0.05));
+            border: 1px solid rgba(212,168,67,0.15); border-radius: 14px;
+            padding: 24px 28px; transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative; overflow: hidden;
+            animation: slideInLeft 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .step:nth-child(even) { animation: slideInRight 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        .step::before {
+            content: ''; position: absolute; inset: 0;
+            background: radial-gradient(circle at 0% 50%, rgba(212,168,67,0.1), transparent 60%);
+            opacity: 0; transition: opacity 0.4s;
+        }
+        .step:hover::before { opacity: 1; }
+        .step:hover {
+            border-color: var(--gold);
+            transform: translateY(-4px);
+            animation: glowPulse 2s ease-in-out infinite;
+        }
+        .step-num {
+            flex-shrink: 0; width: 40px; height: 40px; border-radius: 50%;
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Playfair Display', serif; font-weight: 900; color: #0A0A0A; font-size: 1.1rem;
+            box-shadow: 0 0 20px rgba(212,168,67,0.4);
+            animation: float 3s ease-in-out infinite;
+        }
+        .step-text { font-size: 1rem; color: var(--gray); }
+        .step-text strong { color: var(--white); }
+
+        /* TOOLS */
+        .tools-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+        .tool-group {
+            background: linear-gradient(135deg, rgba(212,168,67,0.05), rgba(79,195,247,0.05));
+            border: 1px solid rgba(212,168,67,0.15); border-radius: 14px;
+            padding: 32px; transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative; overflow: hidden;
+            animation: scaleIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .tool-group::before {
+            content: ''; position: absolute; top: -50%; right: -50%;
+            width: 300px; height: 300px; border-radius: 50%;
+            background: radial-gradient(circle, rgba(212,168,67,0.2), transparent);
+            opacity: 0; transition: opacity 0.4s;
+        }
+        .tool-group:hover::before { opacity: 0.5; }
+        .tool-group:hover {
+            border-color: var(--gold);
+            transform: translateY(-6px);
+            animation: glowPulse 2s ease-in-out infinite;
+        }
+        .tool-group-header { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+        .tool-group-icon { font-size: 1.6rem; }
+        .tool-group-title { font-size: 1.2rem; font-weight: 700; color: var(--gold); }
+        .tool-group-count { color: var(--gray); font-size: 0.8rem; margin-left: auto; background: var(--bg); padding: 2px 10px; border-radius: 100px; }
+        .tool-list { list-style: none; }
+        .tool-list li { padding: 6px 0; color: var(--gray); font-size: 0.9rem; padding-left: 16px; position: relative; }
+        .tool-list li::before { content: '›'; position: absolute; left: 0; color: var(--gold); font-weight: 700; }
+
+        /* ROUTER */
+        .router-table-wrap { overflow-x: auto; }
+        .router-table {
+            width: 100%; border-collapse: collapse; margin-top: 8px;
+            background: var(--card); border-radius: 14px; overflow: hidden;
+        }
+        .router-table th, .router-table td { padding: 14px 20px; text-align: left; font-size: 0.9rem; }
+        .router-table th { background: var(--bg); color: var(--gold); font-weight: 700; border-bottom: 1px solid var(--border); }
+        .router-table td { border-bottom: 1px solid var(--border); color: var(--gray); }
+        .router-table tr:last-child td { border-bottom: none; }
+        .router-table .model-tag {
+            display: inline-block; padding: 2px 10px; border-radius: 100px; font-size: 0.75rem; font-weight: 700;
+        }
+        .tag-haiku { background: rgba(79,195,247,0.15); color: var(--blue); }
+        .tag-sonnet { background: rgba(212,168,67,0.15); color: var(--gold); }
+        .tag-opus { background: rgba(242,210,117,0.15); color: var(--gold-light); }
+
+        /* INTERFACES */
+        .interfaces-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+        .iface-card {
+            background: linear-gradient(135deg, rgba(26,26,26,0.6), rgba(26,26,26,0.3));
+            border: 1px solid rgba(212,168,67,0.15); border-radius: 14px;
+            padding: 36px 28px; text-align: center; transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative; overflow: hidden;
+            animation: slideInUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            backdrop-filter: blur(10px);
+        }
+        .iface-card::before {
+            content: ''; position: absolute; inset: 0;
+            background: conic-gradient(from 0deg, rgba(212,168,67,0.1), rgba(6,182,212,0.1), rgba(212,168,67,0.1));
+            opacity: 0; animation: rotateBg 20s linear infinite;
+            transition: opacity 0.4s;
+        }
+        .iface-card:hover::before { opacity: 0.5; }
+        .iface-card:hover {
+            border-color: var(--gold);
+            transform: translateY(-8px);
+            animation: glowPulse 2s ease-in-out infinite;
+        }
+        .iface-icon { font-size: 2.4rem; margin-bottom: 16px; }
+        .iface-card h3 { font-size: 1.15rem; margin-bottom: 10px; color: var(--white); }
+        .iface-card p { color: var(--gray); font-size: 0.9rem; }
+
+        /* COMPARE TABLE */
+        .compare-table {
+            width: 100%; border-collapse: collapse;
+            background: var(--card); border-radius: 14px; overflow: hidden;
+        }
+        .compare-table th, .compare-table td { padding: 14px 20px; text-align: left; font-size: 0.9rem; }
+        .compare-table th { background: var(--bg); color: var(--gold); font-weight: 700; border-bottom: 1px solid var(--border); }
+        .compare-table td { border-bottom: 1px solid var(--border); color: var(--gray); }
+        .compare-table tr:last-child td { border-bottom: none; }
+        .tag-green { display: inline-block; padding: 2px 10px; border-radius: 100px; font-size: 0.75rem; font-weight: 700; background: rgba(78,204,163,0.15); color: var(--green); }
+        .tag-red { display: inline-block; padding: 2px 10px; border-radius: 100px; font-size: 0.75rem; font-weight: 700; background: rgba(233,69,96,0.15); color: var(--red); }
+
+        /* INSTALL SECTION */
+        .install-options { display: flex; flex-direction: column; gap: 24px; max-width: 700px; margin: 0 auto; }
+        .install-option {
+            background: linear-gradient(135deg, rgba(26,26,26,0.6), rgba(26,26,26,0.3));
+            border: 1px solid rgba(212,168,67,0.15); border-radius: 14px; padding: 28px;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative; overflow: hidden;
+            animation: slideInUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            backdrop-filter: blur(10px);
+        }
+        .install-option::before {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(212,168,67,0.1), transparent);
+            animation: shimmer 3s infinite;
+        }
+        .install-option:hover {
+            border-color: var(--gold);
+            transform: translateY(-4px);
+            animation: glowPulse 2s ease-in-out infinite;
+        }
+        .install-option h4 { color: var(--gold); margin-bottom: 12px; font-size: 1rem; }
+        .install-option pre {
+            background: var(--bg); border: 1px solid var(--border); border-radius: 8px;
+            padding: 16px; overflow-x: auto; font-size: 0.85rem; color: var(--gold-light); line-height: 1.7;
+        }
+
+        /* AUTONOMY MODES */
+        .modes-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+        .mode-card {
+            background: linear-gradient(135deg, rgba(212,168,67,0.05), rgba(168,85,247,0.05));
+            border: 1px solid rgba(212,168,67,0.15); border-radius: 14px;
+            padding: 32px 24px; text-align: center; transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative; overflow: hidden;
+            animation: slideInUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .mode-card::before {
+            content: ''; position: absolute; inset: 0;
+            background: radial-gradient(ellipse at 50% 0%, rgba(212,168,67,0.15), transparent 80%);
+            opacity: 0; transition: opacity 0.4s;
+        }
+        .mode-card:hover::before { opacity: 1; }
+        .mode-card:hover {
+            border-color: var(--gold);
+            transform: translateY(-6px);
+            animation: glowPulse 2s ease-in-out infinite;
+        }
+        .mode-card .mode-name { font-family: 'JetBrains Mono', monospace; font-size: 1.1rem; font-weight: 700; color: var(--gold); margin-bottom: 10px; }
+        .mode-card p { color: var(--gray); font-size: 0.9rem; }
+        .mode-card .mode-default { display: inline-block; margin-top: 10px; font-size: 0.7rem; padding: 2px 10px; border-radius: 100px; background: rgba(212,168,67,0.15); color: var(--gold); }
+
+        /* TELEGRAM */
+        .telegram-features { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; max-width: 700px; margin: 0 auto; }
+        .tg-feat {
+            background: linear-gradient(135deg, rgba(79,195,247,0.05), rgba(168,85,247,0.05));
+            border: 1px solid rgba(212,168,67,0.15); border-radius: 12px;
+            padding: 20px; display: flex; align-items: flex-start; gap: 14px;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative; overflow: hidden;
+            animation: slideInUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .tg-feat::before {
+            content: ''; position: absolute; inset: 0;
+            background: radial-gradient(circle at 0% 0%, rgba(79,195,247,0.2), transparent 100%);
+            opacity: 0; transition: opacity 0.4s;
+        }
+        .tg-feat:hover::before { opacity: 0.5; }
+        .tg-feat:hover {
+            border-color: var(--gold);
+            transform: translateY(-3px);
+            animation: glowPulseCyan 2s ease-in-out infinite;
+        }
+        .tg-feat-icon { font-size: 1.4rem; flex-shrink: 0; margin-top: 2px; }
+        .tg-feat h4 { color: var(--white); font-size: 0.95rem; margin-bottom: 4px; font-family: 'DM Sans', sans-serif; font-weight: 700; }
+        .tg-feat p { color: var(--gray); font-size: 0.82rem; }
+
+        /* FAQ */
+        .faq-list { max-width: 700px; margin: 0 auto; }
+        .faq-item {
+            background: linear-gradient(135deg, rgba(26,26,26,0.6), rgba(26,26,26,0.3));
+            border: 1px solid rgba(212,168,67,0.15); border-radius: 12px;
+            margin-bottom: 12px; overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            animation: slideInUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            backdrop-filter: blur(10px);
+        }
+        .faq-item::before {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(212,168,67,0.05), transparent);
+            opacity: 0; transition: opacity 0.4s;
+        }
+        .faq-item:hover::before { opacity: 1; }
+        .faq-item:hover {
+            border-color: var(--gold);
+            animation: glowPulse 2s ease-in-out infinite;
+        }
+        .faq-q {
+            padding: 20px 24px; cursor: pointer; display: flex; justify-content: space-between; align-items: center;
+            font-weight: 700; color: var(--white); font-size: 0.95rem;
+        }
+        .faq-q .arrow { color: var(--gold); transition: transform 0.3s; font-size: 1.2rem; }
+        .faq-item.open .faq-q .arrow { transform: rotate(180deg); }
+        .faq-a { padding: 0 24px 20px; color: var(--gray); font-size: 0.9rem; display: none; }
+        .faq-item.open .faq-a { display: block; }
+
+        /* FOOTER */
+        footer {
+            border-top: 1px solid rgba(212,168,67,0.1);
+            background: linear-gradient(180deg, transparent, rgba(212,168,67,0.05));
+            padding: 48px 0; text-align: center;
+            animation: slideInUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        footer::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(212,168,67,0.3), transparent);
+        }
+        footer .footer-brand {
+            font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1.3rem;
+            background: linear-gradient(135deg, var(--gold-light), var(--gold));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+            filter: drop-shadow(0 0 10px rgba(212,168,67,0.3));
+            margin-bottom: 16px;
+        }
+        footer .footer-links {
+            display: flex; justify-content: center; gap: 24px; margin-bottom: 16px; flex-wrap: wrap;
+        }
+        footer .footer-links a {
+            color: var(--gray); font-size: 0.85rem;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        footer .footer-links a:hover { color: var(--gold); }
+        footer .footer-copy { color: var(--gray); font-size: 0.8rem; opacity: 0.6; }
+
+        /* Alternative section backgrounds with gradient */
+        section:nth-child(even) {
+            background: linear-gradient(180deg, transparent, rgba(212,168,67,0.02));
+        }
+
+        section:nth-child(even)::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 20% 50%, rgba(212,168,67,0.1), transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .metrics-grid { grid-template-columns: repeat(3, 1fr); }
+            .tools-grid, .interfaces-grid, .modes-grid { grid-template-columns: 1fr; }
+            .ps-grid { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 640px) {
+            .hero h1 { font-size: 2.4rem; }
+            .hero-tagline { font-size: 1.15rem; }
+            .hero-sub { font-size: 0.95rem; }
+            .section-title { font-size: 1.8rem; }
+            .metrics-grid { grid-template-columns: repeat(2, 1fr); }
+            .navbar-links { display: none; position: absolute; top: 100%; left: 0; width: 100%; background: rgba(10,10,10,0.95); flex-direction: column; padding: 20px; gap: 16px; border-bottom: 1px solid var(--border); }
+            .navbar-links.open { display: flex; }
+            .navbar-toggle { display: block; }
+            .telegram-features { grid-template-columns: 1fr; }
+            .install-box code { font-size: 0.7rem; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar">
+    <div class="container">
+        <a href="#hero" class="navbar-brand">InfiniteClaud</a>
+        <button class="navbar-toggle" onclick="document.querySelector('.navbar-links').classList.toggle('open')" aria-label="Menu">&#9776;</button>
+        <div class="navbar-links">
+            <a href="#metrics">Numeros</a>
+            <a href="#problem">Problema</a>
+            <a href="#howto">Como Funciona</a>
+            <a href="#tools">Ferramentas</a>
+            <a href="#router">Router</a>
+            <a href="#interfaces">Interfaces</a>
+            <a href="#compare">Comparativo</a>
+            <a href="#install">Instalacao</a>
+            <a href="#autonomy">Autonomia</a>
+            <a href="#telegram">Telegram</a>
+            <a href="#faq">FAQ</a>
+        </div>
+    </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+    <div class="container">
+        <div class="hero-badge">Claude Code Plugin &bull; Open Source &bull; MIT License</div>
+        <h1><span>InfiniteClaud</span></h1>
+        <p class="hero-tagline">"O agente autonomo que entende a maquina."</p>
+        <p class="hero-sub">20 ferramentas MCP + Model Router + Dashboard + Telegram.<br>50x mais rapido. 90% menos tokens.</p>
+        <div class="install-box" id="installBtn" onclick="copyInstall()">
+            <code>claude plugin install --from github Silvakazu-cell/infiniteclaud</code>
+            <span class="copy-icon">&#x2398;</span>
+            <span class="copied-tooltip" id="copiedTooltip">Copiado!</span>
+        </div>
+    </div>
+</section>
+
+<!-- METRICS -->
+<section id="metrics">
+    <div class="container">
+        <h2 class="section-title reveal">Numeros que Impressionam</h2>
+        <p class="section-subtitle reveal">Performance real, medida em producao.</p>
+        <div class="metrics-grid">
+            <div class="metric-card reveal"><div class="metric-value">50x</div><div class="metric-label">mais rapido que screenshot-based</div></div>
+            <div class="metric-card reveal"><div class="metric-value">90%</div><div class="metric-label">menos tokens por sessao</div></div>
+            <div class="metric-card reveal"><div class="metric-value">20</div><div class="metric-label">ferramentas especializadas</div></div>
+            <div class="metric-card reveal"><div class="metric-value">3</div><div class="metric-label">interfaces de acesso</div></div>
+            <div class="metric-card reveal"><div class="metric-value">&lt;100ms</div><div class="metric-label">por acao</div></div>
+        </div>
+    </div>
+</section>
+
+<!-- PROBLEM / SOLUTION -->
+<section id="problem" style="background: var(--card);">
+    <div class="container">
+        <h2 class="section-title reveal">Problema vs Solucao</h2>
+        <p class="section-subtitle reveal">Por que Computer Use nao e suficiente — e como InfiniteClaud resolve.</p>
+        <div class="ps-grid">
+            <div class="ps-card problem reveal">
+                <h3>O Problema: Computer Use</h3>
+                <ul>
+                    <li>Lento: 2-5 segundos por acao</li>
+                    <li>Caro: +500 tokens por acao (screenshots)</li>
+                    <li>Impreciso: baseado em pixels, falha com resolucoes diferentes</li>
+                    <li>Sem acesso remoto: precisa de tela ativa</li>
+                    <li>Sem inteligencia de roteamento de modelos</li>
+                </ul>
+            </div>
+            <div class="ps-card solution reveal">
+                <h3>A Solucao: InfiniteClaud</h3>
+                <ul>
+                    <li>DOM direto: acessa elementos sem screenshots</li>
+                    <li>APIs nativas: AppleScript, Shell, Playwright</li>
+                    <li>MCP Protocol: integracao nativa com Claude Code</li>
+                    <li>Zero overhead: sem processamento de imagem</li>
+                    <li>Model Router: escolhe o modelo ideal por tarefa</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="howto">
+    <div class="container">
+        <h2 class="section-title reveal">Como Funciona</h2>
+        <p class="section-subtitle reveal">Do install ao resultado em 5 passos simples.</p>
+        <div class="steps">
+            <div class="step reveal">
+                <div class="step-num">1</div>
+                <div class="step-text"><strong>Instale com 1 comando</strong><br>Plugin marketplace do Claude Code — sem dependencias manuais.</div>
+            </div>
+            <div class="step reveal">
+                <div class="step-num">2</div>
+                <div class="step-text"><strong>Ative com /InfiniteClaud</strong><br>O servidor MCP inicia automaticamente com 20 ferramentas.</div>
+            </div>
+            <div class="step reveal">
+                <div class="step-num">3</div>
+                <div class="step-text"><strong>Fale naturalmente</strong><br>"Abra o Gmail e me mostre os emails" — linguagem natural, sem comandos.</div>
+            </div>
+            <div class="step reveal">
+                <div class="step-num">4</div>
+                <div class="step-text"><strong>Claude chama ferramentas MCP automaticamente</strong><br>O Model Router seleciona o modelo ideal e a ferramenta correta.</div>
+            </div>
+            <div class="step reveal">
+                <div class="step-num">5</div>
+                <div class="step-text"><strong>Resultado em &lt;100ms sem screenshots</strong><br>DOM direto, APIs nativas, resposta instantanea.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- TOOLS -->
+<section id="tools" style="background: var(--card);">
+    <div class="container">
+        <h2 class="section-title reveal">20 Ferramentas Especializadas</h2>
+        <p class="section-subtitle reveal">Catalogo completo organizado por dominio.</p>
+        <div class="tools-grid">
+            <div class="tool-group reveal">
+                <div class="tool-group-header">
+                    <span class="tool-group-icon">&#127760;</span>
+                    <span class="tool-group-title">Web (Playwright)</span>
+                    <span class="tool-group-count">8 ferramentas</span>
+                </div>
+                <ul class="tool-list">
+                    <li>web_navigate — navegar para URL</li>
+                    <li>web_click — clicar em elemento</li>
+                    <li>web_type — digitar em campo</li>
+                    <li>web_extract — extrair conteudo da pagina</li>
+                    <li>web_screenshot — capturar tela</li>
+                    <li>web_scroll — scroll na pagina</li>
+                    <li>web_wait — aguardar elemento</li>
+                    <li>web_evaluate — executar JavaScript</li>
+                </ul>
+            </div>
+            <div class="tool-group reveal">
+                <div class="tool-group-header">
+                    <span class="tool-group-icon">&#128193;</span>
+                    <span class="tool-group-title">Filesystem</span>
+                    <span class="tool-group-count">5 ferramentas</span>
+                </div>
+                <ul class="tool-list">
+                    <li>fs_read — ler arquivo</li>
+                    <li>fs_write — escrever arquivo</li>
+                    <li>fs_list — listar diretorio</li>
+                    <li>fs_search — buscar arquivos</li>
+                    <li>fs_watch — monitorar mudancas</li>
+                </ul>
+            </div>
+            <div class="tool-group reveal">
+                <div class="tool-group-header">
+                    <span class="tool-group-icon">&#127823;</span>
+                    <span class="tool-group-title">Nativo macOS (PyAutoGUI)</span>
+                    <span class="tool-group-count">5 ferramentas</span>
+                </div>
+                <ul class="tool-list">
+                    <li>native_click — clicar em coordenada</li>
+                    <li>native_type — digitar texto</li>
+                    <li>native_hotkey — atalho de teclado</li>
+                    <li>native_screenshot — captura de tela</li>
+                    <li>native_move — mover mouse</li>
+                </ul>
+            </div>
+            <div class="tool-group reveal">
+                <div class="tool-group-header">
+                    <span class="tool-group-icon">&#9881;</span>
+                    <span class="tool-group-title">Sistema (AppleScript + Shell)</span>
+                    <span class="tool-group-count">2 ferramentas</span>
+                </div>
+                <ul class="tool-list">
+                    <li>system_applescript — executar AppleScript</li>
+                    <li>system_shell — executar comando shell</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- MODEL ROUTER -->
+<section id="router">
+    <div class="container">
+        <h2 class="section-title reveal">Model Router</h2>
+        <p class="section-subtitle reveal">Roteamento automatico entre Haiku, Sonnet e Opus. A tarefa certa no modelo certo — ~90% menos tokens por sessao.</p>
+        <div class="router-table-wrap reveal">
+            <table class="router-table">
+                <thead>
+                    <tr><th>Tipo de Tarefa</th><th>Modelo</th><th>Tokens (estimado)</th><th>Economia</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Navegacao simples</td><td><span class="model-tag tag-haiku">Haiku</span></td><td>~50</td><td><span class="tag-green">95%</span></td></tr>
+                    <tr><td>Extracao de dados</td><td><span class="model-tag tag-haiku">Haiku</span></td><td>~80</td><td><span class="tag-green">90%</span></td></tr>
+                    <tr><td>Automacao multi-step</td><td><span class="model-tag tag-sonnet">Sonnet</span></td><td>~200</td><td><span class="tag-green">80%</span></td></tr>
+                    <tr><td>Analise complexa</td><td><span class="model-tag tag-sonnet">Sonnet</span></td><td>~350</td><td><span class="tag-green">70%</span></td></tr>
+                    <tr><td>Raciocinio profundo</td><td><span class="model-tag tag-opus">Opus</span></td><td>~600</td><td><span class="tag-green">40%</span></td></tr>
+                    <tr><td>Planejamento estrategico</td><td><span class="model-tag tag-opus">Opus</span></td><td>~800</td><td><span class="tag-green">20%</span></td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+<!-- INTERFACES -->
+<section id="interfaces" style="background: var(--card);">
+    <div class="container">
+        <h2 class="section-title reveal">3 Interfaces de Acesso</h2>
+        <p class="section-subtitle reveal">Use como preferir — terminal, browser ou celular.</p>
+        <div class="interfaces-grid">
+            <div class="iface-card reveal">
+                <div class="iface-icon">&#9000;</div>
+                <h3>Claude Code</h3>
+                <p>Sessao interativa no terminal. Ative com /InfiniteClaud e use linguagem natural.</p>
+            </div>
+            <div class="iface-card reveal">
+                <div class="iface-icon">&#127760;</div>
+                <h3>Dashboard Web</h3>
+                <p>localhost:8080 com suporte a Tailscale para acesso remoto seguro. Visualize logs, tarefas e status.</p>
+            </div>
+            <div class="iface-card reveal">
+                <div class="iface-icon">&#128241;</div>
+                <h3>Telegram Bot</h3>
+                <p>Controle remoto completo com memoria persistente, aprendizado e fuzzy matching.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- COMPARE -->
+<section id="compare">
+    <div class="container">
+        <h2 class="section-title reveal">InfiniteClaud vs Computer Use</h2>
+        <p class="section-subtitle reveal">Comparativo direto — feature por feature.</p>
+        <div class="router-table-wrap reveal">
+            <table class="compare-table">
+                <thead>
+                    <tr><th>Feature</th><th>Computer Use</th><th>InfiniteClaud</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Velocidade por acao</td><td><span class="tag-red">2-5s</span></td><td><span class="tag-green">&lt;100ms</span></td></tr>
+                    <tr><td>Tokens por acao</td><td><span class="tag-red">+500</span></td><td><span class="tag-green">~50</span></td></tr>
+                    <tr><td>Metodo de acesso</td><td><span class="tag-red">Pixel/Screenshot</span></td><td><span class="tag-green">DOM/API direto</span></td></tr>
+                    <tr><td>Precisao</td><td><span class="tag-red">Varia com resolucao</span></td><td><span class="tag-green">100% deterministico</span></td></tr>
+                    <tr><td>Acesso remoto</td><td><span class="tag-red">Nao</span></td><td><span class="tag-green">Telegram + Dashboard</span></td></tr>
+                    <tr><td>Model routing</td><td><span class="tag-red">Nao</span></td><td><span class="tag-green">Haiku/Sonnet/Opus</span></td></tr>
+                    <tr><td>Custo por sessao</td><td><span class="tag-red">Alto</span></td><td><span class="tag-green">~90% menor</span></td></tr>
+                    <tr><td>Memoria persistente</td><td><span class="tag-red">Nao</span></td><td><span class="tag-green">Sim (Telegram)</span></td></tr>
+                    <tr><td>Protocolo</td><td><span class="tag-red">Proprietario</span></td><td><span class="tag-green">MCP (aberto)</span></td></tr>
+                    <tr><td>Licenca</td><td><span class="tag-red">Fechado</span></td><td><span class="tag-green">MIT Open Source</span></td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+<!-- INSTALL -->
+<section id="install" style="background: var(--card);">
+    <div class="container">
+        <h2 class="section-title reveal">Instalacao</h2>
+        <p class="section-subtitle reveal">Tres formas de comecar — escolha a sua.</p>
+        <div class="install-options">
+            <div class="install-option reveal">
+                <h4>Opcao 1: Plugin Marketplace</h4>
+                <pre><code>claude plugin install --from github Silvakazu-cell/infiniteclaud</code></pre>
+            </div>
+            <div class="install-option reveal">
+                <h4>Opcao 2: Manual</h4>
+                <pre><code>git clone https://github.com/Silvakazu-cell/infiniteclaud.git
+cd infiniteclaud
+bash setup.sh</code></pre>
+            </div>
+            <div class="install-option reveal">
+                <h4>Opcao 3: Ativar no Claude Code</h4>
+                <pre><code>/InfiniteClaud</code></pre>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- AUTONOMY MODES -->
+<section id="autonomy">
+    <div class="container">
+        <h2 class="section-title reveal">Modos de Autonomia</h2>
+        <p class="section-subtitle reveal">Controle total sobre o nivel de autonomia do agente.</p>
+        <div class="modes-grid">
+            <div class="mode-card reveal">
+                <div class="mode-name">full</div>
+                <p>Executa tudo sem perguntar. Maximo de velocidade e autonomia para tarefas confiantes.</p>
+            </div>
+            <div class="mode-card reveal">
+                <div class="mode-name">checkpoint</div>
+                <p>Pausa em acoes destrutivas e pede confirmacao. Equilibrio entre velocidade e seguranca.</p>
+                <span class="mode-default">padrao</span>
+            </div>
+            <div class="mode-card reveal">
+                <div class="mode-name">plan_first</div>
+                <p>Mostra o plano completo antes de executar. Maximo controle e previsibilidade.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- TELEGRAM -->
+<section id="telegram" style="background: var(--card);">
+    <div class="container">
+        <h2 class="section-title reveal">Telegram Bot</h2>
+        <p class="section-subtitle reveal">Controle remoto inteligente com memoria e aprendizado.</p>
+        <div class="telegram-features">
+            <div class="tg-feat reveal">
+                <span class="tg-feat-icon">&#128172;</span>
+                <div><h4>Conversa Natural</h4><p>Sem comandos — fale normalmente como em um chat. O bot entende contexto e intencao.</p></div>
+            </div>
+            <div class="tg-feat reveal">
+                <span class="tg-feat-icon">&#129504;</span>
+                <div><h4>Memoria Persistente</h4><p>Lembra de conversas anteriores e preferencias entre sessoes.</p></div>
+            </div>
+            <div class="tg-feat reveal">
+                <span class="tg-feat-icon">&#128269;</span>
+                <div><h4>Fuzzy Matching</h4><p>Entende mesmo com erros de digitacao ou linguagem informal.</p></div>
+            </div>
+            <div class="tg-feat reveal">
+                <span class="tg-feat-icon">&#128161;</span>
+                <div><h4>Autoconsciencia</h4><p>Registra automaticamente o que nao sabe fazer — e aprende com o tempo.</p></div>
+            </div>
+            <div class="tg-feat reveal">
+                <span class="tg-feat-icon">&#128247;</span>
+                <div><h4>Screenshots como Foto</h4><p>Capturas de tela enviadas diretamente como imagem no Telegram.</p></div>
+            </div>
+            <div class="tg-feat reveal">
+                <span class="tg-feat-icon">&#128274;</span>
+                <div><h4>Acesso Seguro</h4><p>Autenticacao por Telegram ID — apenas usuarios autorizados.</p></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+    <div class="container">
+        <h2 class="section-title reveal">FAQ</h2>
+        <p class="section-subtitle reveal">Perguntas frequentes sobre o InfiniteClaud.</p>
+        <div class="faq-list">
+            <div class="faq-item reveal">
+                <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+                    <span>Preciso de API key?</span><span class="arrow">&#9660;</span>
+                </div>
+                <div class="faq-a">Nao. O InfiniteClaud funciona diretamente com sua assinatura do Claude Code. Sem API keys, sem configuracao extra.</div>
+            </div>
+            <div class="faq-item reveal">
+                <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+                    <span>Funciona em Windows?</span><span class="arrow">&#9660;</span>
+                </div>
+                <div class="faq-a">Atualmente funciona em macOS. Suporte a Linux esta em desenvolvimento e sera lancado em breve. Windows esta no roadmap futuro.</div>
+            </div>
+            <div class="faq-item reveal">
+                <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+                    <span>E gratuito?</span><span class="arrow">&#9660;</span>
+                </div>
+                <div class="faq-a">Sim, 100% gratuito e open source sob licenca MIT. Use, modifique e distribua livremente.</div>
+            </div>
+            <div class="faq-item reveal">
+                <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+                    <span>Como atualizo?</span><span class="arrow">&#9660;</span>
+                </div>
+                <div class="faq-a">Execute <code style="color:var(--gold-light);background:var(--bg);padding:2px 8px;border-radius:4px;">claude plugin update infiniteclaud</code> no terminal.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+    <div class="container">
+        <div class="footer-brand">InfiniteClaud</div>
+        <div class="footer-links">
+            <a href="https://github.com/Silvakazu-cell/infiniteclaud" target="_blank">GitHub</a>
+            <a href="#install">Instalacao</a>
+            <a href="#tools">Ferramentas</a>
+            <a href="#faq">FAQ</a>
+        </div>
+        <p class="footer-copy">Criado por Douglas Kazunari &bull; Licenca MIT &bull; 2026</p>
+    </div>
+</footer>
+
+<script>
+// Copy install command with enhanced feedback
+function copyInstall() {
+    const text = 'claude plugin install --from github Silvakazu-cell/infiniteclaud';
+    navigator.clipboard.writeText(text).then(function() {
+        var tip = document.getElementById('copiedTooltip');
+        tip.classList.add('show');
+        setTimeout(function() { tip.classList.remove('show'); }, 1800);
+    });
+}
+
+// Intersection Observer for scroll animations
+var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+        }
+    });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.reveal').forEach(function(el) {
+    observer.observe(el);
+});
+
+// Parallax effect on scroll
+window.addEventListener('scroll', function() {
+    var scrollY = window.scrollY;
+    var heroElements = document.querySelectorAll('.hero::before, .hero::after');
+    var bgElements = document.querySelectorAll('section::before, section::after');
+
+    bgElements.forEach(function(el) {
+        var speed = 0.5;
+        el.style.transform = 'translateY(' + (scrollY * speed) + 'px)';
+    });
+});
+
+// Smooth scroll behavior
+document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+    anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        var target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    });
+});
+
+// Close mobile menu on link click
+document.querySelectorAll('.navbar-links a').forEach(function(link) {
+    link.addEventListener('click', function() {
+        document.querySelector('.navbar-links').classList.remove('open');
+    });
+});
+
+// Add glow cursor effect
+document.addEventListener('mousemove', function(e) {
+    var x = e.clientX;
+    var y = e.clientY;
+
+    document.querySelectorAll('.metric-card, .tool-group, .iface-card, .mode-card').forEach(function(card) {
+        var rect = card.getBoundingClientRect();
+        var cardX = rect.left + rect.width / 2;
+        var cardY = rect.top + rect.height / 2;
+
+        var distance = Math.sqrt((x - cardX) ** 2 + (y - cardY) ** 2);
+        var maxDistance = 300;
+
+        if (distance < maxDistance) {
+            var opacity = 1 - (distance / maxDistance);
+            var glow = card.querySelector('::before');
+            if (glow) {
+                card.style.boxShadow = '0 0 ' + (40 * opacity) + 'px rgba(212,168,67,' + (0.3 * opacity) + ')';
+            }
+        }
+    });
+});
+
+// Fade navbar on scroll
+var navbar = document.querySelector('.navbar');
+window.addEventListener('scroll', function() {
+    if (window.scrollY > 100) {
+        navbar.style.backgroundColor = 'rgba(10,10,10,0.95)';
+    } else {
+        navbar.style.backgroundColor = 'linear-gradient(180deg, rgba(10,10,10,0.9), rgba(10,10,10,0.7))';
+    }
+});
+
+// FAQ toggle with animation
+document.querySelectorAll('.faq-q').forEach(function(question) {
+    question.addEventListener('click', function() {
+        var item = this.parentElement;
+        item.classList.toggle('open');
+    });
+});
+</script>
+
+</body>
+</html>
