@@ -416,10 +416,23 @@
         /* AUTONOMY MODES */
         .modes-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
         .mode-card {
-            background: var(--card); border: 1px solid var(--border); border-radius: 14px;
-            padding: 32px 24px; text-align: center; transition: all 0.3s;
+            background: linear-gradient(135deg, rgba(212,168,67,0.05), rgba(168,85,247,0.05));
+            border: 1px solid rgba(212,168,67,0.15); border-radius: 14px;
+            padding: 32px 24px; text-align: center; transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative; overflow: hidden;
+            animation: slideInUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
-        .mode-card:hover { border-color: var(--gold); transform: translateY(-4px); box-shadow: 0 8px 32px rgba(212,168,67,0.1); }
+        .mode-card::before {
+            content: ''; position: absolute; inset: 0;
+            background: radial-gradient(ellipse at 50% 0%, rgba(212,168,67,0.15), transparent 80%);
+            opacity: 0; transition: opacity 0.4s;
+        }
+        .mode-card:hover::before { opacity: 1; }
+        .mode-card:hover {
+            border-color: var(--gold);
+            transform: translateY(-6px);
+            animation: glowPulse 2s ease-in-out infinite;
+        }
         .mode-card .mode-name { font-family: 'JetBrains Mono', monospace; font-size: 1.1rem; font-weight: 700; color: var(--gold); margin-bottom: 10px; }
         .mode-card p { color: var(--gray); font-size: 0.9rem; }
         .mode-card .mode-default { display: inline-block; margin-top: 10px; font-size: 0.7rem; padding: 2px 10px; border-radius: 100px; background: rgba(212,168,67,0.15); color: var(--gold); }
