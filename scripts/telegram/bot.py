@@ -148,6 +148,9 @@ async def tools(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def screenshot(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not is_authorized(update):
         return
+    if not _IS_MACOS:
+        await update.message.reply_text("❌ Screenshot nativo disponível apenas no macOS.")
+        return
     await update.message.reply_text("📸 Tirando screenshot...")
     try:
         result = screen_screenshot()
