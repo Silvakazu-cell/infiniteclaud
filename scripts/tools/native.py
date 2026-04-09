@@ -26,16 +26,19 @@ def keyboard_type(text: str) -> str:
 
 def keyboard_hotkey(keys: str) -> str:
     """Executa atalho de teclado. Formato: 'cmd+c', 'ctrl+shift+n', 'alt+tab'."""
+    import platform as _plat
+    is_mac = _plat.system() == "Darwin"
+
     key_list = [k.strip() for k in keys.split("+")]
     mapped = []
     for k in key_list:
         k_lower = k.lower()
         if k_lower == "cmd":
-            mapped.append("command")
+            mapped.append("command" if is_mac else "win")
         elif k_lower == "ctrl":
             mapped.append("ctrl")
         elif k_lower == "alt":
-            mapped.append("option")
+            mapped.append("option" if is_mac else "alt")
         elif k_lower == "shift":
             mapped.append("shift")
         else:
