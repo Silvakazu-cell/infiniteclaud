@@ -1,0 +1,39 @@
+# Jekyll Configuration for GitHub Pages
+theme: null
+plugins: []
+
+# Site Settings
+title: InfiniteClaud
+description: Autonomous automation agent for Claude Code
+url: https://infiniteclaud.com
+repository: Silvakazu-cell/infiniteclaud
+
+# Build Settings
+markdown: kramdown
+permalink: /:title/
+excerpt_separator: <!-- more -->
+
+# Security
+enforce_ssl: true
+force_https: true
+
+# Analytics
+google_analytics: null
+
+# Exclude from processing
+exclude:
+  - .git
+  - .github
+  - .gitignore
+  - docs
+  - scripts
+  - branding
+  - node_modules
+  - vendor/bundle
+  - vendor/cache
+  - vendor/gems
+  - vendor/ruby
+  - Gemfile
+  - Gemfile.lock
+  - README.md
+  - LICENSE
