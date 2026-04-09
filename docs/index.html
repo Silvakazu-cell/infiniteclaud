@@ -156,8 +156,19 @@
         .section-subtitle { text-align: center; color: var(--gray); font-size: 1.05rem; max-width: 600px; margin: 0 auto 56px; }
 
         /* Animate on scroll */
-        .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+        .reveal {
+            opacity: 0; transform: translateY(30px);
+            transition: opacity 0.7s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
         .reveal.visible { opacity: 1; transform: translateY(0); }
+
+        /* Staggered animations */
+        .reveal:nth-child(1) { transition-delay: 0s; }
+        .reveal:nth-child(2) { transition-delay: 0.1s; }
+        .reveal:nth-child(3) { transition-delay: 0.2s; }
+        .reveal:nth-child(4) { transition-delay: 0.3s; }
+        .reveal:nth-child(5) { transition-delay: 0.4s; }
+        .reveal:nth-child(n+6) { transition-delay: 0.5s; }
 
         /* HERO */
         .hero {
