@@ -597,6 +597,136 @@
     <div class="container">
         <h2 class="section-title reveal">20 Ferramentas Especializadas</h2>
         <p class="section-subtitle reveal">Organizado por domínio</p>
+        <div class="tools-grid">
+            <div class="tool-group reveal">
+                <div class="tool-group-header">
+                    <span class="tool-group-icon">🌐</span>
+                    <span class="tool-group-title">Web (Playwright)</span>
+                    <span class="tool-group-count">8 ferramentas</span>
+                </div>
+                <ul class="tool-list">
+                    <li>web_navigate — navegar para URL</li>
+                    <li>web_click — clicar em elemento</li>
+                    <li>web_type — digitar em campo</li>
+                    <li>web_extract — extrair conteúdo</li>
+                    <li>web_screenshot — capturar tela</li>
+                    <li>web_scroll — scroll na página</li>
+                    <li>web_wait — aguardar elemento</li>
+                    <li>web_evaluate — executar JavaScript</li>
+                </ul>
+            </div>
+            <div class="tool-group reveal">
+                <div class="tool-group-header">
+                    <span class="tool-group-icon">📁</span>
+                    <span class="tool-group-title">Filesystem</span>
+                    <span class="tool-group-count">5 ferramentas</span>
+                </div>
+                <ul class="tool-list">
+                    <li>fs_read — ler arquivo</li>
+                    <li>fs_write — escrever arquivo</li>
+                    <li>fs_list — listar diretório</li>
+                    <li>fs_search — buscar arquivos</li>
+                    <li>fs_watch — monitorar mudanças</li>
+                </ul>
+            </div>
+            <div class="tool-group reveal">
+                <div class="tool-group-header">
+                    <span class="tool-group-icon">🖥️</span>
+                    <span class="tool-group-title">Nativo macOS</span>
+                    <span class="tool-group-count">5 ferramentas</span>
+                </div>
+                <ul class="tool-list">
+                    <li>native_click — clicar em coordenada</li>
+                    <li>native_type — digitar texto</li>
+                    <li>native_hotkey — atalho de teclado</li>
+                    <li>native_screenshot — captura de tela</li>
+                    <li>native_move — mover mouse</li>
+                </ul>
+            </div>
+            <div class="tool-group reveal">
+                <div class="tool-group-header">
+                    <span class="tool-group-icon">⚙️</span>
+                    <span class="tool-group-title">Sistema</span>
+                    <span class="tool-group-count">2 ferramentas</span>
+                </div>
+                <ul class="tool-list">
+                    <li>system_applescript — executar AppleScript</li>
+                    <li>system_shell — executar comando shell</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- COMPARATIVO -->
+<section id="comparativo">
+    <div class="container">
+        <h2 class="section-title reveal">InfiniteClaud vs Computer Use</h2>
+        <p class="section-subtitle reveal">Comparativo direto — feature por feature</p>
+        <div class="router-table-wrap reveal">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Computer Use</th>
+                        <th>InfiniteClaud</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Velocidade por ação</td>
+                        <td><span class="model-tag tag-red">2-5s</span></td>
+                        <td><span class="model-tag tag-green">&lt;100ms</span></td>
+                    </tr>
+                    <tr>
+                        <td>Tokens por ação</td>
+                        <td><span class="model-tag tag-red">+500</span></td>
+                        <td><span class="model-tag tag-green">~50</span></td>
+                    </tr>
+                    <tr>
+                        <td>Método de acesso</td>
+                        <td><span class="model-tag tag-red">Pixel/Screenshot</span></td>
+                        <td><span class="model-tag tag-green">DOM/API direto</span></td>
+                    </tr>
+                    <tr>
+                        <td>Acesso remoto</td>
+                        <td><span class="model-tag tag-red">Não</span></td>
+                        <td><span class="model-tag tag-green">Telegram + Dashboard</span></td>
+                    </tr>
+                    <tr>
+                        <td>Model routing</td>
+                        <td><span class="model-tag tag-red">Não</span></td>
+                        <td><span class="model-tag tag-green">Haiku/Sonnet/Opus</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" style="background: linear-gradient(180deg, transparent, rgba(212, 168, 67, 0.02));">
+    <div class="container">
+        <h2 class="section-title reveal">Perguntas Frequentes</h2>
+        <p class="section-subtitle reveal">Respostas rápidas sobre InfiniteClaud</p>
+        <div class="faq-list">
+            <div class="faq-item reveal">
+                <div class="faq-q">Como funciona o Model Router? <span class="arrow">▼</span></div>
+                <div class="faq-a">O Model Router analisa cada prompt e roteia automaticamente para o modelo ideal: Haiku para tarefas simples, Sonnet para automação multi-step, e Opus para raciocínio profundo. Resultado: 90% menos tokens por sessão.</div>
+            </div>
+            <div class="faq-item reveal">
+                <div class="faq-q">Quais são as 3 interfaces de acesso? <span class="arrow">▼</span></div>
+                <div class="faq-a">Claude Code (CLI interativo), Dashboard Web (localhost:8080 ou remoto via Tailscale), e Telegram Bot (para controle remoto completo com memória persistente).</div>
+            </div>
+            <div class="faq-item reveal">
+                <div class="faq-q">InfiniteClaud é melhor que Computer Use? <span class="arrow">▼</span></div>
+                <div class="faq-a">Sim! 50x mais rápido (&lt;100ms vs 2-5s), 90% menos tokens, acesso direto ao DOM/APIs nativas, sem dependência de screenshots, e com inteligência de roteamento de modelos.</div>
+            </div>
+            <div class="faq-item reveal">
+                <div class="faq-q">Como instalar? <span class="arrow">▼</span></div>
+                <div class="faq-a">Um comando: <code>claude plugin install --from github Silvakazu-cell/infiniteclaud</code>. Ative com /InfiniteClaud e comece a usar imediatamente.</div>
+            </div>
+        </div>
     </div>
 </section>
 
