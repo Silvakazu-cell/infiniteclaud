@@ -469,13 +469,15 @@ async def stats_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 def main():
     config = load_bot_config()
-    token = config.get("token", "")
+    token = os.environ.get("TELEGRAM_BOT_TOKEN") or config.get("token", "")
     if not token:
         print("❌ Token do bot não configurado!")
-        print(f"Configure em: {BOT_CONFIG_PATH}")
+        print("Opção A — variável de ambiente:")
+        print('  export TELEGRAM_BOT_TOKEN="seu-token-aqui"')
+        print(f"Opção B — arquivo de configuração: {BOT_CONFIG_PATH}")
         print("1. Abra o Telegram e fale com @BotFather")
         print("2. Crie um bot com /newbot")
-        print("3. Copie o token e coloque no config.json")
+        print("3. Copie o token gerado")
         return
 
     app = Application.builder().token(token).build()
