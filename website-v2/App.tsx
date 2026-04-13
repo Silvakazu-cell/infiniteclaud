@@ -25,6 +25,8 @@ export default function App() {
       const progress = Math.min(elapsed / duration, 1)
       setTokensNormal(Math.floor(progress * 125000))
       setTokensOptimized(Math.floor(progress * 5000))
+      setSpeedNormal(Math.floor(progress * 8.2 * 100) / 100)
+      setSpeedOptimized(Math.floor(progress * 0.16 * 100) / 100)
       if (progress < 1) requestAnimationFrame(animate)
     }
     animate()
