@@ -37,6 +37,31 @@ Regras em `~/.claude/automation/router/rules.json`
 - **checkpoint** — pausa em ações destrutivas (padrão)
 - **plan_first** — mostra plano antes
 
+## Configuração inicial (primeiro uso)
+
+### Telegram Bot
+
+Para usar o bot no iPhone/celular, configure seu próprio token:
+
+1. Abra o Telegram e fale com `@BotFather`
+2. Envie `/newbot` e siga as instruções
+3. Copie o token gerado e configure:
+
+```bash
+# Opção A — variável de ambiente (recomendado)
+export TELEGRAM_BOT_TOKEN="seu-token-aqui"
+
+# Opção B — arquivo de configuração
+cat > ~/.claude/automation/telegram/config.json << 'CONF'
+{
+  "token": "seu-token-aqui",
+  "allowed_users": []
+}
+CONF
+```
+
+> `allowed_users` aceita lista de user IDs do Telegram para restringir acesso ao bot. Deixe vazio `[]` para liberar para qualquer um (não recomendado).
+
 ## Interfaces
 
 - Claude Code: `/InfiniteClaud`
