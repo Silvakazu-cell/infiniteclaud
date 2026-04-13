@@ -4,14 +4,16 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@400;500;600;700&display=swap');
 
-* {
-  font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
-}
+@layer base {
+  * {
+    font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
+  }
 
-h1, h2, h3, h4 {
-  font-family: 'Playfair Display', serif;
-  font-weight: 900;
-  letter-spacing: -0.02em;
+  h1, h2, h3, h4 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+  }
 }
 
 @keyframes float {
@@ -63,30 +65,22 @@ h1, h2, h3, h4 {
   }
 }
 
-@keyframes shimmer {
-  0% {
-    background-position: -1000px 0;
+@layer components {
+  .animate-float {
+    animation: float 20s ease-in-out infinite;
   }
-  100% {
-    background-position: 1000px 0;
+
+  .animate-float-delayed {
+    animation: float 25s ease-in-out infinite;
+    animation-delay: 2s;
   }
-}
 
-/* Custom animation delays */
-.animate-float {
-  animation: float 20s ease-in-out infinite;
-}
+  .animate-slide-in-up {
+    animation: slideInUp 0.6s ease-out forwards;
+    opacity: 0;
+  }
 
-.animate-float-delayed {
-  animation: float 25s ease-in-out infinite;
-  animation-delay: 2s;
-}
-
-.animate-slide-in-up {
-  animation: slideInUp 0.6s ease-out forwards;
-  opacity: 0;
-}
-
-.animate-fade-in {
-  animation: fadeIn 0.6s ease-out forwards;
+  .animate-fade-in {
+    animation: fadeIn 0.6s ease-out forwards;
+  }
 }
