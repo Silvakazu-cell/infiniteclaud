@@ -7,6 +7,9 @@ export default function App() {
   const [tokensOptimized, setTokensOptimized] = useState(0)
   const [selectedUseCase, setSelectedUseCase] = useState<string | null>(null)
   const [activeTab, setActiveTab] = useState<'overview' | 'costs' | 'speed'>('overview')
+  const [speedNormal, setSpeedNormal] = useState(0)
+  const [speedOptimized, setSpeedOptimized] = useState(0)
+  const [selectedSetupStep, setSelectedSetupStep] = useState(0)
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY)
