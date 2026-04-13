@@ -41,6 +41,15 @@ export default function App() {
     { id: 'translator', icon: '🌍', title: 'Localização', company: 'Global', challenge: '100k strings/mês para traduzir', solution: 'Model Router + Batch', results: ['🌐 45 idiomas', '⚡ 20x mais rápido', '🎨 98% contexto', '💰 -72% custo profissional'], metrics: { languages: '3.7x', speed: '20x', cost: '-72%' } }
   ]
 
+  const setupSteps = [
+    { step: 1, icon: '📥', title: 'Instalar Plugin', cmd: 'npm install infiniteclaud-plugin', desc: 'Baixar do npm registry' },
+    { step: 2, icon: '🔗', title: 'Clonar Repositório', cmd: 'git clone https://github.com/infiniteclaud/infiniteclaud.git', desc: 'Código-fonte completo' },
+    { step: 3, icon: '⚙️', title: 'Configurar Environment', cmd: 'cp .env.example .env\n# Editar com suas chaves API', desc: 'Definir CLAUDE_API_KEY' },
+    { step: 4, icon: '📊', title: 'Dashboard Inicial', cmd: 'npm run dev\n# Abrir http://localhost:3000', desc: 'Interface de configuração' },
+    { step: 5, icon: '✅', title: 'Testar Agentes', cmd: 'npm run test:agents\n# Rodar suite de testes', desc: 'Validar instalação' },
+    { step: 6, icon: '🚀', title: 'Telegram + Automação', cmd: '/start\n# Ativar bot do Telegram', desc: 'Conexão com canal' }
+  ]
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#0F0F0F] via-[#1A1A1A] to-[#0F0F0F] text-[#F5F0E8]">
       {/* Navbar Sticky */}
