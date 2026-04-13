@@ -281,6 +281,129 @@ export default function App() {
         </div>
       </section>
 
+      {/* ========== SECTION 5B: SPEED COMPARISON ========== */}
+      <section className="py-20 px-6 border-t border-[rgba(212,168,67,0.1)]">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-5xl font-black mb-4"><span className="text-[#F5F0E8]">Velocidade de Processamento</span><br /><span className="bg-gradient-to-r from-[#D4A843] to-[#06B6D4] bg-clip-text text-transparent">50x Mais Rápido</span></h2>
+            <p className="text-[#A0A0A0] text-lg mt-4 max-w-2xl mx-auto">Tempo de resposta reduzido drasticamente com processamento otimizado</p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div className="space-y-8">
+              <div className="p-8 bg-[rgba(212,168,67,0.05)] border border-[rgba(212,168,67,0.2)] rounded-2xl">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="text-4xl">⏱️</div>
+                  <div>
+                    <h3 className="text-[#D4A843] font-black">Uso Normal</h3>
+                    <p className="text-[#A0A0A0] text-sm">Latência típica</p>
+                  </div>
+                </div>
+                <div className="text-4xl font-black text-[#D4A843]">{speedNormal.toFixed(2)}s</div>
+                <p className="text-[#A0A0A0] text-sm mt-2">de um máximo de 8.2 segundos</p>
+              </div>
+
+              <div className="p-8 bg-[rgba(6,182,212,0.05)] border border-[rgba(6,182,212,0.2)] rounded-2xl">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="text-4xl">⚡</div>
+                  <div>
+                    <h3 className="text-[#06B6D4] font-black">Com InfiniteClaud</h3>
+                    <p className="text-[#A0A0A0] text-sm">Latência otimizada</p>
+                  </div>
+                </div>
+                <div className="text-4xl font-black text-[#06B6D4]">{speedOptimized.toFixed(3)}s</div>
+                <p className="text-[#A0A0A0] text-sm mt-2">de apenas 0.16 segundos</p>
+              </div>
+            </div>
+
+            <div className="space-y-6">
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="font-bold text-[#D4A843]">Uso Normal</span>
+                  <span className="text-[#A0A0A0]">8.2s</span>
+                </div>
+                <div className="relative h-16 bg-[rgba(255,255,255,0.05)] rounded-xl overflow-hidden border border-[rgba(212,168,67,0.2)]">
+                  <div className="h-full bg-gradient-to-r from-[#D4A843] via-[#EC4899] to-[#D4A843] rounded-xl opacity-80 transition-all duration-2000 ease-out" style={{ width: '100%', boxShadow: '0 0 20px rgba(212, 168, 67, 0.5)' }}></div>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="font-bold text-[#06B6D4]">Com InfiniteClaud</span>
+                  <span className="text-[#A0A0A0]">0.16s</span>
+                </div>
+                <div className="relative h-16 bg-[rgba(255,255,255,0.05)] rounded-xl overflow-hidden border border-[rgba(6,182,212,0.2)]">
+                  <div className="h-full bg-gradient-to-r from-[#06B6D4] via-[#00E5CC] to-[#06B6D4] rounded-xl opacity-80 transition-all duration-2000 ease-out" style={{ width: '1.95%', boxShadow: '0 0 20px rgba(6, 182, 212, 0.5)' }}></div>
+                </div>
+              </div>
+
+              <div className="p-6 bg-[rgba(168,85,247,0.05)] border border-[rgba(168,85,247,0.2)] rounded-xl mt-4">
+                <p className="text-[#A855F7] font-bold mb-2">📊 Aceleração</p>
+                <p className="text-3xl font-black text-[#A855F7]">50.6x</p>
+                <p className="text-[#A0A0A0] text-sm mt-2">Mais rápido com InfiniteClaud</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ========== SECTION 6: SETUP DE INSTALAÇÃO ========== */}
+      <section className="py-20 px-6 border-t border-[rgba(212,168,67,0.1)]">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-5xl font-black text-center mb-12"><span className="bg-gradient-to-r from-[#D4A843] to-[#06B6D4] bg-clip-text text-transparent">Setup em 6 Passos</span></h2>
+
+          <div className="grid md:grid-cols-3 gap-4 mb-12">
+            {setupSteps.map((s) => (
+              <button key={s.step} onClick={() => setSelectedSetupStep(s.step - 1)} className={`p-4 rounded-lg border-2 transition text-center ${selectedSetupStep === s.step - 1 ? 'bg-gradient-to-br from-[rgba(212,168,67,0.2)] to-[rgba(6,182,212,0.1)] border-[#D4A843]' : 'bg-[rgba(15,15,15,0.5)] border-[rgba(212,168,67,0.2)] hover:border-[#D4A843]'}`}>
+                <div className="text-3xl mb-2">{s.icon}</div>
+                <h3 className="text-[#D4A843] font-black text-sm">{s.title}</h3>
+                <p className="text-[#A0A0A0] text-xs mt-1">{s.desc}</p>
+              </button>
+            ))}
+          </div>
+
+          <div className="bg-gradient-to-br from-[rgba(212,168,67,0.1)] to-[rgba(6,182,212,0.05)] border-2 border-[#D4A843] rounded-2xl p-8">
+            <div className="flex items-center gap-4 mb-6">
+              <div className="text-5xl">{setupSteps[selectedSetupStep].icon}</div>
+              <div>
+                <h3 className="text-3xl font-black text-[#D4A843]">{setupSteps[selectedSetupStep].title}</h3>
+                <p className="text-[#A0A0A0]">Passo {setupSteps[selectedSetupStep].step} de 6</p>
+              </div>
+            </div>
+
+            <div className="bg-[#0F0F0F] border border-[rgba(6,182,212,0.3)] rounded-lg p-6 mb-6 font-mono text-sm">
+              <pre className="text-[#06B6D4]"><code>{setupSteps[selectedSetupStep].cmd}</code></pre>
+            </div>
+
+            <div className="flex gap-4">
+              <button onClick={() => {
+                const cmd = setupSteps[selectedSetupStep].cmd
+                navigator.clipboard.writeText(cmd)
+                alert('✅ Comando copiado!')
+              }} className="flex-1 px-6 py-3 bg-gradient-to-r from-[#D4A843] to-[#A07C2A] rounded-lg font-bold text-black hover:shadow-xl transition">
+                📋 Copiar Comando
+              </button>
+              {selectedSetupStep < setupSteps.length - 1 && (
+                <button onClick={() => setSelectedSetupStep(selectedSetupStep + 1)} className="flex-1 px-6 py-3 bg-[rgba(6,182,212,0.2)] border-2 border-[#06B6D4] text-[#06B6D4] rounded-lg font-bold hover:bg-[rgba(6,182,212,0.3)] transition">
+                  Próximo →
+                </button>
+              )}
+            </div>
+          </div>
+
+          <div className="mt-12 p-8 bg-[rgba(6,182,212,0.05)] border border-[rgba(6,182,212,0.2)] rounded-2xl">
+            <h3 className="text-[#06B6D4] font-black mb-4">💡 Dica de Instalação</h3>
+            <p className="text-[#F5F0E8] mb-3">Para melhor compatibilidade, certifique-se de ter:</p>
+            <ul className="text-[#A0A0A0] space-y-2">
+              <li>✅ Node.js 18+ instalado</li>
+              <li>✅ Claude API key válida</li>
+              <li>✅ Git configurado no terminal</li>
+              <li>✅ Python 3.9+ (opcional, para agentes avançados)</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
       {/* ========== FINAL CTA ========== */}
       <section className="py-20 px-6 border-t border-[rgba(212,168,67,0.1)]">
         <div className="max-w-4xl mx-auto text-center">
